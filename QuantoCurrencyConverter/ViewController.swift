@@ -96,6 +96,11 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
 //            rightValStr = runningNumber
 //            processOperation(operation: currentOperation)
 //        }
+        if currentOperation != Operation.Empty {
+            liveOperation(operation: currentOperation)
+            print("----------- Operaction \(currentOperation) -------------")
+        }
+        
         
         self.enableBtns()
         
@@ -111,6 +116,28 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         
     }
     
+    func liveOperation(operation:Operation){
+        
+        if currentOperation != Operation.Empty {
+            if runningNumber != "" {
+                
+                rightValStr = runningNumber
+                
+                if currentOperation == Operation.Multiply {
+                    result = "\(Double(leftValStr)! * Double(rightValStr)!)"
+                } else if currentOperation == Operation.Divide{
+                    result = "\(Double(leftValStr)! / Double(rightValStr)!)"
+                } else if currentOperation == Operation.Subtract{
+                    result = "\(Double(leftValStr)! - Double(rightValStr)!)"
+                } else if currentOperation == Operation.Add{
+                    result = "\(Double(leftValStr)! + Double(rightValStr)!)"
+                }
+                
+                baseCurrencyLbl.text = result
+            }
+        }
+        
+    }
     func processOperation(operation: Operation){
         if currentOperation != Operation.Empty {
             if runningNumber != "" {
@@ -144,6 +171,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             } else {
                 print("rightVal Is empty")
             }
+            calculationLbl.text = result
             currentOperation = operation
         }else {
             leftValStr = runningNumber
@@ -215,7 +243,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         if self.buttonsEnabled != false {
             processOperation(operation: .Divide)
             displayRunningNumber += " ÷ "
-//            processOperation(operation: currentOperation)
+            
             calculationLbl.text = displayRunningNumber
         }
         self.disableBtns()
