@@ -12,9 +12,18 @@
 		0847E9BB1EBB5D56001D2CAA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0847E9B91EBB5D56001D2CAA /* Main.storyboard */; };
 		0847E9BD1EBB5D56001D2CAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0847E9BC1EBB5D56001D2CAA /* Assets.xcassets */; };
 		0847E9C01EBB5D56001D2CAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0847E9BE1EBB5D56001D2CAA /* LaunchScreen.storyboard */; };
+		5750107F2B75C4EBBABC65EC /* Pods_QuantoCurrencyConverter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B72DA7901FACEBDAA4B6DE74 /* Pods_QuantoCurrencyConverter.framework */; };
+		7A13AA391ED718BC00140304 /* ExchangeCurrencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A13AA381ED718BC00140304 /* ExchangeCurrencies.swift */; };
+		7A1CB9A51ED5B5D80065758B /* baseCurrVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1CB9A41ED5B5D80065758B /* baseCurrVC.swift */; };
+		7A1CB9A81ED60F8C0065758B /* destCurrViC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1CB9A71ED60F8C0065758B /* destCurrViC.swift */; };
+		7A39EDB91ED2BDCD00993346 /* CurrencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39EDB81ED2BDCD00993346 /* CurrencyCell.swift */; };
+		7A71EA121ECB92E000EF7469 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EA111ECB92E000EF7469 /* Constants.swift */; };
+		7A71EA141ECB92F000EF7469 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EA131ECB92F000EF7469 /* ExchangeRates.swift */; };
+		7A71EA161ECC8F3B00EF7469 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 7A71EA151ECC8F3B00EF7469 /* Podfile */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0474B69B25E9EDF8E4ACF35C /* Pods-QuantoCurrencyConverter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantoCurrencyConverter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuantoCurrencyConverter/Pods-QuantoCurrencyConverter.debug.xcconfig"; sourceTree = "<group>"; };
 		0847E9B21EBB5D56001D2CAA /* QuantoCurrencyConverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuantoCurrencyConverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0847E9B51EBB5D56001D2CAA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0847E9B71EBB5D56001D2CAA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +31,15 @@
 		0847E9BC1EBB5D56001D2CAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0847E9BF1EBB5D56001D2CAA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0847E9C11EBB5D56001D2CAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A13AA381ED718BC00140304 /* ExchangeCurrencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeCurrencies.swift; sourceTree = "<group>"; };
+		7A1CB9A41ED5B5D80065758B /* baseCurrVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = baseCurrVC.swift; sourceTree = "<group>"; };
+		7A1CB9A71ED60F8C0065758B /* destCurrViC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = destCurrViC.swift; sourceTree = "<group>"; };
+		7A39EDB81ED2BDCD00993346 /* CurrencyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyCell.swift; sourceTree = "<group>"; };
+		7A71EA111ECB92E000EF7469 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		7A71EA131ECB92F000EF7469 /* ExchangeRates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeRates.swift; sourceTree = "<group>"; };
+		7A71EA151ECC8F3B00EF7469 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		7E990CCB5CED66D610F11456 /* Pods-QuantoCurrencyConverter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantoCurrencyConverter.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuantoCurrencyConverter/Pods-QuantoCurrencyConverter.release.xcconfig"; sourceTree = "<group>"; };
+		B72DA7901FACEBDAA4B6DE74 /* Pods_QuantoCurrencyConverter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuantoCurrencyConverter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5750107F2B75C4EBBABC65EC /* Pods_QuantoCurrencyConverter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +59,8 @@
 			children = (
 				0847E9B41EBB5D56001D2CAA /* QuantoCurrencyConverter */,
 				0847E9B31EBB5D56001D2CAA /* Products */,
+				805DF3D1D481057748EC55FD /* Pods */,
+				BB0F6FF02EAEDABB6EE4235B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -55,13 +76,69 @@
 			isa = PBXGroup;
 			children = (
 				0847E9B51EBB5D56001D2CAA /* AppDelegate.swift */,
-				0847E9B71EBB5D56001D2CAA /* ViewController.swift */,
+				7A13AA3A1ED71B0E00140304 /* Model */,
+				7A71EA101ECB92C500EF7469 /* Util */,
+				7A39EDB31ED2BD8400993346 /* Views */,
+				7A1CB9A61ED5BA880065758B /* Controllers */,
 				0847E9B91EBB5D56001D2CAA /* Main.storyboard */,
 				0847E9BC1EBB5D56001D2CAA /* Assets.xcassets */,
 				0847E9BE1EBB5D56001D2CAA /* LaunchScreen.storyboard */,
 				0847E9C11EBB5D56001D2CAA /* Info.plist */,
+				7A71EA151ECC8F3B00EF7469 /* Podfile */,
 			);
 			path = QuantoCurrencyConverter;
+			sourceTree = "<group>";
+		};
+		7A13AA3A1ED71B0E00140304 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7A13AA381ED718BC00140304 /* ExchangeCurrencies.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		7A1CB9A61ED5BA880065758B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0847E9B71EBB5D56001D2CAA /* ViewController.swift */,
+				7A1CB9A41ED5B5D80065758B /* baseCurrVC.swift */,
+				7A1CB9A71ED60F8C0065758B /* destCurrViC.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		7A39EDB31ED2BD8400993346 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7A39EDB81ED2BDCD00993346 /* CurrencyCell.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		7A71EA101ECB92C500EF7469 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				7A71EA111ECB92E000EF7469 /* Constants.swift */,
+				7A71EA131ECB92F000EF7469 /* ExchangeRates.swift */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
+		805DF3D1D481057748EC55FD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0474B69B25E9EDF8E4ACF35C /* Pods-QuantoCurrencyConverter.debug.xcconfig */,
+				7E990CCB5CED66D610F11456 /* Pods-QuantoCurrencyConverter.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		BB0F6FF02EAEDABB6EE4235B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B72DA7901FACEBDAA4B6DE74 /* Pods_QuantoCurrencyConverter.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +148,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0847E9C41EBB5D56001D2CAA /* Build configuration list for PBXNativeTarget "QuantoCurrencyConverter" */;
 			buildPhases = (
+				7FA3044E47D10F05C8C13DF8 /* [CP] Check Pods Manifest.lock */,
 				0847E9AE1EBB5D56001D2CAA /* Sources */,
 				0847E9AF1EBB5D56001D2CAA /* Frameworks */,
 				0847E9B01EBB5D56001D2CAA /* Resources */,
+				287EB0A252179F4615543546 /* [CP] Embed Pods Frameworks */,
+				4265539D5BA0C6456048BA0E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -97,6 +177,7 @@
 					0847E9B11EBB5D56001D2CAA = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 79872QZ8UM;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -126,19 +207,74 @@
 			files = (
 				0847E9C01EBB5D56001D2CAA /* LaunchScreen.storyboard in Resources */,
 				0847E9BD1EBB5D56001D2CAA /* Assets.xcassets in Resources */,
+				7A71EA161ECC8F3B00EF7469 /* Podfile in Resources */,
 				0847E9BB1EBB5D56001D2CAA /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		287EB0A252179F4615543546 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuantoCurrencyConverter/Pods-QuantoCurrencyConverter-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4265539D5BA0C6456048BA0E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-QuantoCurrencyConverter/Pods-QuantoCurrencyConverter-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7FA3044E47D10F05C8C13DF8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		0847E9AE1EBB5D56001D2CAA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A39EDB91ED2BDCD00993346 /* CurrencyCell.swift in Sources */,
+				7A13AA391ED718BC00140304 /* ExchangeCurrencies.swift in Sources */,
+				7A71EA141ECB92F000EF7469 /* ExchangeRates.swift in Sources */,
+				7A1CB9A81ED60F8C0065758B /* destCurrViC.swift in Sources */,
 				0847E9B81EBB5D56001D2CAA /* ViewController.swift in Sources */,
+				7A1CB9A51ED5B5D80065758B /* baseCurrVC.swift in Sources */,
 				0847E9B61EBB5D56001D2CAA /* AppDelegate.swift in Sources */,
+				7A71EA121ECB92E000EF7469 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,21 +393,26 @@
 		};
 		0847E9C51EBB5D56001D2CAA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0474B69B25E9EDF8E4ACF35C /* Pods-QuantoCurrencyConverter.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 79872QZ8UM;
 				INFOPLIST_FILE = QuantoCurrencyConverter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.klish3.QuantoCurrencyConverter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		0847E9C61EBB5D56001D2CAA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7E990CCB5CED66D610F11456 /* Pods-QuantoCurrencyConverter.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = 79872QZ8UM;
 				INFOPLIST_FILE = QuantoCurrencyConverter/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -300,6 +441,7 @@
 				0847E9C61EBB5D56001D2CAA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
