@@ -6,5 +6,7 @@ target 'QuantoCurrencyConverter' do
   use_frameworks!
 
     pod 'Alamofire', '~> 4.4'
+    pod 'Firebase/Core'
+    pod 'Firebase/Database'
 
 end

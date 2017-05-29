@@ -20,6 +20,9 @@
 		7A71EA121ECB92E000EF7469 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EA111ECB92E000EF7469 /* Constants.swift */; };
 		7A71EA141ECB92F000EF7469 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EA131ECB92F000EF7469 /* ExchangeRates.swift */; };
 		7A71EA161ECC8F3B00EF7469 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 7A71EA151ECC8F3B00EF7469 /* Podfile */; };
+		7A9F77C41EDC2C7F00E1405A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A9F77C31EDC2C7F00E1405A /* GoogleService-Info.plist */; };
+		7A9F77C61EDC33EC00E1405A /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9F77C51EDC33EC00E1405A /* DataService.swift */; };
+		7A9F77C81EDC398100E1405A /* CountryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9F77C71EDC398100E1405A /* CountryData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +40,10 @@
 		7A39EDB81ED2BDCD00993346 /* CurrencyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyCell.swift; sourceTree = "<group>"; };
 		7A71EA111ECB92E000EF7469 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7A71EA131ECB92F000EF7469 /* ExchangeRates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeRates.swift; sourceTree = "<group>"; };
-		7A71EA151ECC8F3B00EF7469 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; };
+		7A71EA151ECC8F3B00EF7469 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		7A9F77C31EDC2C7F00E1405A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		7A9F77C51EDC33EC00E1405A /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		7A9F77C71EDC398100E1405A /* CountryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryData.swift; sourceTree = "<group>"; };
 		7E990CCB5CED66D610F11456 /* Pods-QuantoCurrencyConverter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantoCurrencyConverter.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuantoCurrencyConverter/Pods-QuantoCurrencyConverter.release.xcconfig"; sourceTree = "<group>"; };
 		B72DA7901FACEBDAA4B6DE74 /* Pods_QuantoCurrencyConverter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuantoCurrencyConverter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -84,6 +90,7 @@
 				0847E9BC1EBB5D56001D2CAA /* Assets.xcassets */,
 				0847E9BE1EBB5D56001D2CAA /* LaunchScreen.storyboard */,
 				0847E9C11EBB5D56001D2CAA /* Info.plist */,
+				7A9F77C31EDC2C7F00E1405A /* GoogleService-Info.plist */,
 				7A71EA151ECC8F3B00EF7469 /* Podfile */,
 			);
 			path = QuantoCurrencyConverter;
@@ -93,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				7A13AA381ED718BC00140304 /* ExchangeCurrencies.swift */,
+				7A9F77C71EDC398100E1405A /* CountryData.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -119,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				7A71EA111ECB92E000EF7469 /* Constants.swift */,
+				7A9F77C51EDC33EC00E1405A /* DataService.swift */,
 				7A71EA131ECB92F000EF7469 /* ExchangeRates.swift */,
 			);
 			name = Util;
@@ -207,6 +216,7 @@
 			files = (
 				0847E9C01EBB5D56001D2CAA /* LaunchScreen.storyboard in Resources */,
 				0847E9BD1EBB5D56001D2CAA /* Assets.xcassets in Resources */,
+				7A9F77C41EDC2C7F00E1405A /* GoogleService-Info.plist in Resources */,
 				7A71EA161ECC8F3B00EF7469 /* Podfile in Resources */,
 				0847E9BB1EBB5D56001D2CAA /* Main.storyboard in Resources */,
 			);
@@ -267,10 +277,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A9F77C61EDC33EC00E1405A /* DataService.swift in Sources */,
 				7A39EDB91ED2BDCD00993346 /* CurrencyCell.swift in Sources */,
 				7A13AA391ED718BC00140304 /* ExchangeCurrencies.swift in Sources */,
 				7A71EA141ECB92F000EF7469 /* ExchangeRates.swift in Sources */,
 				7A1CB9A81ED60F8C0065758B /* destCurrViC.swift in Sources */,
+				7A9F77C81EDC398100E1405A /* CountryData.swift in Sources */,
 				0847E9B81EBB5D56001D2CAA /* ViewController.swift in Sources */,
 				7A1CB9A51ED5B5D80065758B /* baseCurrVC.swift in Sources */,
 				0847E9B61EBB5D56001D2CAA /* AppDelegate.swift in Sources */,
