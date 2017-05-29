@@ -15,8 +15,10 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     @IBOutlet weak var subtractBtn: UIButton!
     @IBOutlet weak var multiplyBtn: UIButton!
     @IBOutlet weak var addBtn: UIButton!
+    @IBOutlet weak var decimalBtn: UIButton!
     
     var buttonsEnabled: Bool!
+    var decimalEnabled: Bool!
     
     var baseCurrSel: String!
     var destCurrSel: String!
@@ -39,14 +41,12 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     var rightValStr = ""
     var result = ""
     
-    
     enum Operation: String {
         case Divide = "/"
         case Multiply = "*"
         case Subtract = "-"
         case Add = "+"
         case Empty = "Empty"
-        
     }
     
     var currentOperation = Operation.Empty
@@ -58,8 +58,13 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     
         currentRates.downloadExchangeRates {}
         
+        self.decimalEnabled = true
+        decimalBtn.isUserInteractionEnabled = true
         
-        
+        calculationLbl.text = "0"
+        baseCurrencyLbl.text = "0"
+        destinationCurrencyLbl.text = "Select Countries to Convert"
+        destinationCurrencyLbl.textColor = UIColor(red:0/255, green:0/255, blue:0/255, alpha:0.2)
         self.disableBtns()
         
     }
@@ -69,38 +74,17 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         runningNumber += "\(sender.tag)"
         displayRunningNumber += "\(sender.tag)"
         calculationLbl.text = displayRunningNumber
+        
+        if currentOperation == Operation.Empty {
+            result = runningNumber
+//            print(result)
+        }
         baseCurrencyLbl.text = result
         
-        print("----------- Number Pressed -------------")
-        print("runningNumber = \(runningNumber)")
-        print("--------------------------------")
-        print("leftValStr = \(leftValStr)")
-        print("currentOperation = \(currentOperation)")
-        print("rightValStr = \(rightValStr)")
-        print("result = \(result)")
-
-        //enables live calculations
-//        if rightValStr == "" || leftValStr == "" {
-//                result = runningNumber
-//        }
-//        
-//        if result != "" {
-//            baseCurrencyLbl.text = result
-//        } else {
-//            baseCurrencyLbl.text = "0"
-//        }
-        
-        
-        //Removes need for Equal Button
-//        if currentOperation != Operation.Empty && rightValStr != "" && leftValStr != ""  {
-//            rightValStr = runningNumber
-//            processOperation(operation: currentOperation)
-//        }
         if currentOperation != Operation.Empty {
             liveOperation(operation: currentOperation)
-            print("----------- Operaction \(currentOperation) -------------")
+//            print("----------- Operaction \(currentOperation) -------------")
         }
-        
         
         self.enableBtns()
         
@@ -112,6 +96,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             let convertedAmount = Double(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
             
             destinationCurrencyLbl.text = "\(Double(round(convertedAmount)))"
+            destinationCurrencyLbl.textColor = UIColor(red:0/255, green:0/255, blue:0/255, alpha:1)
         }
         
     }
@@ -139,6 +124,8 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         
     }
     func processOperation(operation: Operation){
+        self.decimalEnabled = true
+        decimalBtn.isUserInteractionEnabled = true
         if currentOperation != Operation.Empty {
             if runningNumber != "" {
                 
@@ -178,13 +165,13 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             runningNumber = ""
             currentOperation = operation
         }
-        print("-----------Operation Pressed---------------")
-        print("runningNumber = \(runningNumber)")
-        print("--------------------------------")
-        print("leftValStr = \(leftValStr)")
-        print("currentOperation = \(currentOperation)")
-        print("rightValStr = \(rightValStr)")
-        print("result = \(result)")
+//        print("-----------Operation Pressed---------------")
+//        print("runningNumber = \(runningNumber)")
+//        print("--------------------------------")
+//        print("leftValStr = \(leftValStr)")
+//        print("currentOperation = \(currentOperation)")
+//        print("rightValStr = \(rightValStr)")
+//        print("result = \(result)")
     }
     @IBAction func clearButton(_ sender: Any) {
         
@@ -253,7 +240,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         if self.buttonsEnabled != false {
             processOperation(operation: .Multiply)
             displayRunningNumber += " X "
-//            processOperation(operation: currentOperation)
             calculationLbl.text = displayRunningNumber
         }
         self.disableBtns()
@@ -263,7 +249,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         if self.buttonsEnabled != false {
             processOperation(operation: .Subtract)
             displayRunningNumber += " - "
-//            processOperation(operation: currentOperation)
             calculationLbl.text = displayRunningNumber
         }
         self.disableBtns()
@@ -273,17 +258,20 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         if self.buttonsEnabled != false {
             processOperation(operation: .Add)
             displayRunningNumber += " + "
-//            processOperation(operation: currentOperation)
             calculationLbl.text = displayRunningNumber
         }
        
         self.disableBtns()
     }
     
-    @IBAction func onEqualPressed(sender: AnyObject){
-       
-            processOperation(operation: currentOperation)
-    
+    @IBAction func decimalBtnPressed(_ sender: Any) {
+        if self.decimalEnabled == true {
+            runningNumber += "."
+            displayRunningNumber += "."
+            self.decimalEnabled = false
+            decimalBtn.isUserInteractionEnabled = false
+        }
+
     }
     
     func disableBtns(){
@@ -305,13 +293,20 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     }
     
     func reCalc() {
-        if currentOperation != Operation.Empty && runningNumber != "" && leftValStr != ""  {
-            rightValStr = runningNumber
-            processOperation(operation: currentOperation)
+        if self.destCurrSel != nil && self.baseCurrSel != nil && result != "" {
+            let stringResult = Double(result)!
+            let priceToConver = Double(round(stringResult))
+            
+            let convertedAmount = Double(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
+            
+            destinationCurrencyLbl.text = "\(Double(round(convertedAmount)))"
         }
         print("reCalc")
     }
 
+    @IBAction func removeCharacterSwipe(_ sender: Any) {
+        
+    }
     
 }
 

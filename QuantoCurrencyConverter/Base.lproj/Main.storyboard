@@ -46,12 +46,16 @@
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GNs-cV-PUt">
                                 <rect key="frame" x="315" y="106" width="42" height="21"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="acy-gH-LgC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="zAv-SX-C2n" appends="YES" id="czB-74-bPB"/>
+                                </connections>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ccw-iG-t1Q">
                                 <rect key="frame" x="315" y="161" width="42" height="21"/>
@@ -318,11 +322,11 @@
                                             <constraint firstAttribute="width" constant="50" id="VdH-He-8A3"/>
                                             <constraint firstAttribute="height" constant="50" id="ynb-bZ-o6O"/>
                                         </constraints>
-                                        <state key="normal" title="=">
+                                        <state key="normal" title=".">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="onEqualPressedWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="1HA-tg-Fgd"/>
+                                            <action selector="decimalBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SD2-sA-rgF"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rww-Bk-GeB">
@@ -424,6 +428,7 @@
                         <outlet property="baseCurrencyBtn" destination="3Sz-sq-UdF" id="MDQ-bX-sjF"/>
                         <outlet property="baseCurrencyLbl" destination="GNs-cV-PUt" id="ypM-yr-gga"/>
                         <outlet property="calculationLbl" destination="Gkd-JZ-iY0" id="Xqa-lb-WBQ"/>
+                        <outlet property="decimalBtn" destination="PeY-KY-hyZ" id="vhs-XZ-FHs"/>
                         <outlet property="destinationCurrencyBtn" destination="i0L-Ef-IFa" id="KPZ-pR-5d4"/>
                         <outlet property="destinationCurrencyLbl" destination="ccw-iG-t1Q" id="dl9-k2-WbY"/>
                         <outlet property="divideBtn" destination="lRA-op-wLb" id="Rt0-B4-rro"/>
@@ -432,6 +437,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer cancelsTouchesInView="NO" direction="right" id="zAv-SX-C2n">
+                    <connections>
+                        <action selector="removeCharacterSwipe:" destination="BYZ-38-t0r" id="7Ge-h7-o6O"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="91.304347826086968"/>
         </scene>
