@@ -175,19 +175,37 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     }
     @IBAction func clearButton(_ sender: Any) {
         
-        runningNumber.removeAll()
-        displayRunningNumber.removeAll()
         
-        baseCurrencyLbl.text = "0"
-        destinationCurrencyLbl.text = "0"
-        calculationLbl.text = "0"
-        currentOperation = Operation.Empty
-        leftValStr = ""
-        rightValStr = ""
-        runningNumber = ""
-        displayRunningNumber = ""
-        result = "0"
-        self.disableBtns()
+        if displayRunningNumber != "" && runningNumber != "" {
+            displayRunningNumber.remove(at: displayRunningNumber.index(before: displayRunningNumber.endIndex))
+            runningNumber.remove(at: runningNumber.index(before: runningNumber.endIndex))
+            liveOperation(operation: currentOperation)
+            baseCurrencyLbl.text = result
+            calculationLbl.text = displayRunningNumber
+            
+            if self.destCurrSel != nil && self.baseCurrSel != nil && result != "" {
+                let stringResult = Double(result)!
+                let priceToConver = Double(round(stringResult))
+                
+                let convertedAmount = Double(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
+                
+                destinationCurrencyLbl.text = "\(Double(round(convertedAmount)))"
+            }
+        } else {
+            runningNumber.removeAll()
+            displayRunningNumber.removeAll()
+            
+            baseCurrencyLbl.text = "0"
+            destinationCurrencyLbl.text = "0"
+            calculationLbl.text = "0"
+            currentOperation = Operation.Empty
+            leftValStr = ""
+            rightValStr = ""
+            runningNumber = ""
+            displayRunningNumber = ""
+            result = "0"
+            
+        }
     }
     
     
@@ -301,11 +319,24 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             
             destinationCurrencyLbl.text = "\(Double(round(convertedAmount)))"
         }
+        
         print("reCalc")
     }
 
-    @IBAction func removeCharacterSwipe(_ sender: Any) {
+    @IBAction func swipe(_ sender: UISwipeGestureRecognizer) {
         
+        runningNumber.removeAll()
+        displayRunningNumber.removeAll()
+        
+        baseCurrencyLbl.text = "0"
+        destinationCurrencyLbl.text = "0"
+        calculationLbl.text = "0"
+        currentOperation = Operation.Empty
+        leftValStr = ""
+        rightValStr = ""
+        runningNumber = ""
+        displayRunningNumber = ""
+        result = "0"
     }
     
 }

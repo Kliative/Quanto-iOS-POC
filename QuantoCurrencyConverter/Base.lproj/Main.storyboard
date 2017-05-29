@@ -53,9 +53,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="zAv-SX-C2n" appends="YES" id="czB-74-bPB"/>
-                                </connections>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ccw-iG-t1Q">
                                 <rect key="frame" x="315" y="161" width="42" height="21"/>
@@ -392,6 +389,7 @@
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Ec8-0g-xHz" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="0YW-oY-tFX"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ec8-0g-xHz" secondAttribute="trailing" id="1F5-90-j2w"/>
@@ -422,6 +420,9 @@
                             <constraint firstItem="tu3-id-DR6" firstAttribute="top" secondItem="3Sz-sq-UdF" secondAttribute="bottom" constant="12" id="whL-Kz-46q"/>
                             <constraint firstItem="Ec8-0g-xHz" firstAttribute="top" secondItem="ex6-VQ-LRf" secondAttribute="bottom" constant="9" id="z8P-AB-120"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Arw-Kj-Dpg" appends="YES" id="Lni-BV-FeV"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="addBtn" destination="s0i-Ik-jTn" id="a6J-kf-Ayx"/>
@@ -437,9 +438,9 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer cancelsTouchesInView="NO" direction="right" id="zAv-SX-C2n">
+                <swipeGestureRecognizer direction="right" id="Arw-Kj-Dpg">
                     <connections>
-                        <action selector="removeCharacterSwipe:" destination="BYZ-38-t0r" id="7Ge-h7-o6O"/>
+                        <action selector="swipe:" destination="BYZ-38-t0r" id="eTq-Fg-1bu"/>
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
