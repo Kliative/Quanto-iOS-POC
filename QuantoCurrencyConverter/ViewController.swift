@@ -67,18 +67,25 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
 //                    print("----: \(snap)")
                     if let countryDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
-                        let countryProduct = CountryData(countryName:key,
+                        let countryData = CountryData(countryName:key,
                                                          currencyCode: countryDict["ISO4217_currency_alphabetic_code"] as! String,
                                                          currencyName: countryDict["ISO4217_currency_name"] as! String,
                                                          currencySymbol: countryDict["ISO4217_currency_symbol"] as! String,
-                                                         productData:countryDict["products"] as! Dictionary<String, AnyObject>)
+                                                         productData:countryDict["products"] as! Dictionary<String, AnyObject>,
+                                                         cities:countryDict["cities"] as! [String])
                         
-                        print(countryProduct.countryName)
-                        print(countryProduct.currencyCode)
-                        print(countryProduct.currencyName)
-                        print(countryProduct.currencySymbol)
-//                        Get Product Data e.g. Coke[high]
-                        print(countryProduct.coke["high"]!)
+                        self.countryData.append(countryData)
+                        
+                        let citiData = countryDict["cities"]
+//                        print(citiData?["Pretoria"])
+                        
+//                        print(countryData.countryName)
+//                        print(countryData.currencyCode)
+//                        print(countryData.currencyName)
+//                        print(countryData.currencySymbol)
+//                        print(countryData.coke["high"]!)
+                        print(countryData.cities)
+
                     }
                 }
             }

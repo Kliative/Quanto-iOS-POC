@@ -17,7 +17,7 @@ class CountryData {
     private var _product:String!
 //    private var _products:Dictionary<String, String>!
     
-
+    private var _cities:[String] = []
     
     private var _coke:Dictionary<String, AnyObject>!
     private var _domBeer:Dictionary<String, AnyObject>!
@@ -65,12 +65,18 @@ class CountryData {
         return _oneWayTicket
     }
     
-    init(countryName:String, currencyCode: String, currencyName: String, currencySymbol: String, productData:Dictionary<String, AnyObject>) {
+    var cities:[String]{
+        return _cities
+    }
+    
+    init(countryName:String, currencyCode: String, currencyName: String, currencySymbol: String, productData:Dictionary<String, AnyObject>, cities:[String]) {
         
         self._countryName = countryName
         self._currencyCode = currencyCode
         self._currencyName = currencyName
         self._currencySymbol = currencySymbol
+        
+        self._cities = cities
         
         if let coke = productData["Coke"] as? Dictionary<String, AnyObject>{
            self._coke = coke
