@@ -10,15 +10,25 @@ import Foundation
 
 
 class CountryData {
-    private var _name:String!
+    private var _countryName:String!
     private var _currencyCode:String!
     private var _currencyName:String!
     private var _currencySymbol:String!
     private var _product:String!
 //    private var _products:Dictionary<String, String>!
     
-    var name:String{
-        return _name
+
+    
+    private var _coke:Dictionary<String, AnyObject>!
+    private var _domBeer:Dictionary<String, AnyObject>!
+    private var _impBeer:Dictionary<String, AnyObject>!
+    private var _mcMeal:Dictionary<String, AnyObject>!
+    private var _meal:Dictionary<String, AnyObject>!
+    private var _movieTicket:Dictionary<String, AnyObject>!
+    private var _oneWayTicket:Dictionary<String, AnyObject>!
+    
+    var countryName:String{
+        return _countryName
     }
     var currencyCode:String{
         return _currencyCode
@@ -32,14 +42,6 @@ class CountryData {
     var product:String{
         return _product
     }
-    
-    private var _coke:Dictionary<String, AnyObject>!
-    private var _domBeer:Dictionary<String, AnyObject>!
-    private var _impBeer:Dictionary<String, AnyObject>!
-    private var _mcMeal:Dictionary<String, AnyObject>!
-    private var _meal:Dictionary<String, AnyObject>!
-    private var _movieTicket:Dictionary<String, AnyObject>!
-    private var _oneWayTicket:Dictionary<String, AnyObject>!
     
     var coke:Dictionary<String, AnyObject>{
         return _coke
@@ -63,20 +65,12 @@ class CountryData {
         return _oneWayTicket
     }
     
-    
-//    var products:Dictionary<String, String>{
-//        return _products
-//    }
-    
-    init(name:String, currencyCode: String, currencyName: String, currencySymbol: String) {
-        self._name = name
+    init(countryName:String, currencyCode: String, currencyName: String, currencySymbol: String, productData:Dictionary<String, AnyObject>) {
+        
+        self._countryName = countryName
         self._currencyCode = currencyCode
         self._currencyName = currencyName
         self._currencySymbol = currencySymbol
-    }
-    
-    init(product:String, productData:Dictionary<String, AnyObject>) {
-        self._product = product
         
         if let coke = productData["Coke"] as? Dictionary<String, AnyObject>{
            self._coke = coke

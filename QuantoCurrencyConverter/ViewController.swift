@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate {
-    var productDict = [CountryData]()
+    var countryData = [CountryData]()
     var products: Dictionary<String, AnyObject>!
     //Operation Buttons
     @IBOutlet weak var divideBtn: UIButton!
@@ -65,16 +65,20 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
                 for snap in snapshot {
 //                    print("----: \(snap)")
-                    if let postDict = snap.value as? Dictionary<String, AnyObject> {
+                    if let countryDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
-                        let post = CountryData(product:key, productData:postDict["products"] as! Dictionary<String, AnyObject>)
+                        let countryProduct = CountryData(countryName:key,
+                                                         currencyCode: countryDict["ISO4217_currency_alphabetic_code"] as! String,
+                                                         currencyName: countryDict["ISO4217_currency_name"] as! String,
+                                                         currencySymbol: countryDict["ISO4217_currency_symbol"] as! String,
+                                                         productData:countryDict["products"] as! Dictionary<String, AnyObject>)
                         
+                        print(countryProduct.countryName)
+                        print(countryProduct.currencyCode)
+                        print(countryProduct.currencyName)
+                        print(countryProduct.currencySymbol)
 //                        Get Product Data e.g. Coke[high]
-//                        print(post.coke["high"])
-                        
-//                        self.products = postDict["products"] as! Dictionary<String, AnyObject>
-//                        print(self.products["WineBottle"]?["high"])
-                        
+                        print(countryProduct.coke["high"]!)
                     }
                 }
             }
