@@ -67,49 +67,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        DataService.ds.REF_COUNTRIES.observe(.value, with: { (snapshot) in
-            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
-                for snap in snapshot {
-//                    print("----: \(snap)")
-                    if let countryDict = snap.value as? Dictionary<String, AnyObject> {
-                        let key = snap.key
-                        
-                        let countryDataSnap = CountryData(countryName:key,
-                                                         currencyCode: countryDict["ISO4217_currency_alphabetic_code"] as! String,
-                                                         currencyName: countryDict["ISO4217_currency_name"] as! String,
-                                                         currencySymbol: countryDict["ISO4217_currency_symbol"] as! String,
-                                                         productData:countryDict["products"] as! Dictionary<String, AnyObject>,
-                                                         cities:countryDict["cities"] as! [String])
-                        
-                        self.countryData.append(countryDataSnap)
-                        
-                        self.countryNameArray.append(key)
-                        
-                        self.cityNameArray = countryDict["cities"] as! [String]
-                        
-                        
-                        
-//                        self.getProdData(countryKey:key, cityKey: "\(self.cityNameArray[0])")
-                        self.getCitiesProd(countryKey:key)
-//                        print(self.cityProds["\(self.cityNameArray[0])"]?["Coke"]!)
-//                        self.productsPrices = self.cityProds["\(self.cityNameArray[0])"]?["Coke"]! as! Dictionary<String, AnyObject>
-//                        
-//                        
-//                        
-//                        print(self.productsPrices["low"]!)
-//                        print(countryDataSnap.countryName)
-//                        print(countryDataSnap.currencyCode)
-//                        print(countryDataSnap.currencyName)
-//                        print(countryDataSnap.currencySymbol)
-//                        print(countryDataSnap.coke["high"]!)
-//                        print(countryDataSnap.cities)
-                        
-                        
-                    }
-                }
-            }
-        })
-        
+                
         currentRates = CurrentExchange()
         currentRates.downloadExchangeRates {}
         

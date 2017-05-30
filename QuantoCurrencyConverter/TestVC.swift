@@ -18,7 +18,10 @@ protocol testDataSentDelegate {
 
 
 class TestVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
-
+    var countryData = [CountryData]()
+    
+    var cityNameArray:[String] = []
+    var countryNameArray:[String] = []
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -43,33 +46,48 @@ class TestVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UIS
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.done
         
-        currentRates = CurrentExchange()
-        
-        currentRates.downloadExchangeRates {
-            
-            //Arranges Array in Alphabetical Order
-            self.sortedCurrency = self.currentRates.sortedCurrency
-            
+        DataService.ds.REF_COUNTRIES.observe(.value, with: { (snapshot) in
+            self.countryData = []
+            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
+                for snap in snapshot {
+                    
+                    if let countryDict = snap.value as? Dictionary<String, AnyObject> {
+                        let key = snap.key
+                        
+                        let countryDataSnap = CountryData(countryName:key,
+                                                          currencyCode: countryDict["ISO4217_currency_alphabetic_code"] as! String,
+                                                          currencyName: countryDict["ISO4217_currency_name"] as! String,
+                                                          currencySymbol: countryDict["ISO4217_currency_symbol"] as! String,
+                                                          productData:countryDict["products"] as! Dictionary<String, AnyObject>,
+                                                          cities:countryDict["cities"] as! [String])
+                        
+                        self.countryData.append(countryDataSnap)
+                        
+                        let cc = self.countryData[0]
+                        print(cc.countryName)
+                        self.countryNameArray.append(key)
+                        
+                        self.cityNameArray = countryDict["cities"] as! [String]
+
+                        
+                    }
+                }
+            }
             self.tableView.reloadData()
-        }
+        })
+        
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //Assign correct Cell to countryData indexPath.row
+        let countryData = self.countryData[indexPath.row]
         
-        
-        
-        let text: String!
-        
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "baseCurrCell", for:indexPath) as? CurrencyCell{
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "testCurrCell", for:indexPath) as? CurrencyCell{
             
-            if isSearching {
-                text = filterData[indexPath.row]
-            } else {
-                text = self.sortedCurrency[indexPath.row]
-            }
-            
-            cell.configureCurrencyCell(currencyName: text)
+        
+            //sends throught country Name to cells, create better cellconfig and add more data
+            cell.configureCurrencyCell(currencyName: countryData.countryName)
             
             return cell
             
@@ -85,19 +103,16 @@ class TestVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UIS
             return filterData.count
         }
         
-        return self.currentRates.myCurrency.count
+        return countryData.count
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if isSearching {
-            let data = filterData[indexPath.row]
+        //Assign correct Cell to countryData indexPath.row
+        let countryData = self.countryData[indexPath.row]
+            //send back the currency Code, see if you can send the whole object :) :)
+            let data = countryData.currencyCode
             delegate?.userDidEnterTestData(data: data)
-        } else {
-            let data = self.sortedCurrency[indexPath.row]
-            delegate?.userDidEnterTestData(data: data)
-        }
-        
+      
         dismiss(animated: true) {
             ViewController().reCalc()
         }
