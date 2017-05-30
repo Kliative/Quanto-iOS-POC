@@ -13,6 +13,7 @@
 		0847E9BD1EBB5D56001D2CAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0847E9BC1EBB5D56001D2CAA /* Assets.xcassets */; };
 		0847E9C01EBB5D56001D2CAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0847E9BE1EBB5D56001D2CAA /* LaunchScreen.storyboard */; };
 		5750107F2B75C4EBBABC65EC /* Pods_QuantoCurrencyConverter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B72DA7901FACEBDAA4B6DE74 /* Pods_QuantoCurrencyConverter.framework */; };
+		7A0F70731EDDD58A00798489 /* TestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F70721EDDD58900798489 /* TestVC.swift */; };
 		7A13AA391ED718BC00140304 /* ExchangeCurrencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A13AA381ED718BC00140304 /* ExchangeCurrencies.swift */; };
 		7A1CB9A51ED5B5D80065758B /* baseCurrVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1CB9A41ED5B5D80065758B /* baseCurrVC.swift */; };
 		7A1CB9A81ED60F8C0065758B /* destCurrViC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1CB9A71ED60F8C0065758B /* destCurrViC.swift */; };
@@ -23,6 +24,8 @@
 		7A9F77C41EDC2C7F00E1405A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A9F77C31EDC2C7F00E1405A /* GoogleService-Info.plist */; };
 		7A9F77C61EDC33EC00E1405A /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9F77C51EDC33EC00E1405A /* DataService.swift */; };
 		7A9F77C81EDC398100E1405A /* CountryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9F77C71EDC398100E1405A /* CountryData.swift */; };
+		7A9F77CA1EDD54BD00E1405A /* CityData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9F77C91EDD54BD00E1405A /* CityData.swift */; };
+		7A9F77CC1EDDCC4900E1405A /* ProductData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9F77CB1EDDCC4800E1405A /* ProductData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +37,7 @@
 		0847E9BC1EBB5D56001D2CAA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0847E9BF1EBB5D56001D2CAA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0847E9C11EBB5D56001D2CAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7A0F70721EDDD58900798489 /* TestVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestVC.swift; sourceTree = "<group>"; };
 		7A13AA381ED718BC00140304 /* ExchangeCurrencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeCurrencies.swift; sourceTree = "<group>"; };
 		7A1CB9A41ED5B5D80065758B /* baseCurrVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = baseCurrVC.swift; sourceTree = "<group>"; };
 		7A1CB9A71ED60F8C0065758B /* destCurrViC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = destCurrViC.swift; sourceTree = "<group>"; };
@@ -44,6 +48,8 @@
 		7A9F77C31EDC2C7F00E1405A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		7A9F77C51EDC33EC00E1405A /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		7A9F77C71EDC398100E1405A /* CountryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryData.swift; sourceTree = "<group>"; };
+		7A9F77C91EDD54BD00E1405A /* CityData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityData.swift; sourceTree = "<group>"; };
+		7A9F77CB1EDDCC4800E1405A /* ProductData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductData.swift; sourceTree = "<group>"; };
 		7E990CCB5CED66D610F11456 /* Pods-QuantoCurrencyConverter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuantoCurrencyConverter.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuantoCurrencyConverter/Pods-QuantoCurrencyConverter.release.xcconfig"; sourceTree = "<group>"; };
 		B72DA7901FACEBDAA4B6DE74 /* Pods_QuantoCurrencyConverter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuantoCurrencyConverter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -82,8 +88,8 @@
 			isa = PBXGroup;
 			children = (
 				0847E9B51EBB5D56001D2CAA /* AppDelegate.swift */,
-				7A13AA3A1ED71B0E00140304 /* Model */,
 				7A71EA101ECB92C500EF7469 /* Util */,
+				7A13AA3A1ED71B0E00140304 /* Model */,
 				7A39EDB31ED2BD8400993346 /* Views */,
 				7A1CB9A61ED5BA880065758B /* Controllers */,
 				0847E9B91EBB5D56001D2CAA /* Main.storyboard */,
@@ -101,6 +107,8 @@
 			children = (
 				7A13AA381ED718BC00140304 /* ExchangeCurrencies.swift */,
 				7A9F77C71EDC398100E1405A /* CountryData.swift */,
+				7A9F77C91EDD54BD00E1405A /* CityData.swift */,
+				7A9F77CB1EDDCC4800E1405A /* ProductData.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -110,6 +118,7 @@
 			children = (
 				0847E9B71EBB5D56001D2CAA /* ViewController.swift */,
 				7A1CB9A41ED5B5D80065758B /* baseCurrVC.swift */,
+				7A0F70721EDDD58900798489 /* TestVC.swift */,
 				7A1CB9A71ED60F8C0065758B /* destCurrViC.swift */,
 			);
 			name = Controllers;
@@ -285,8 +294,11 @@
 				7A9F77C81EDC398100E1405A /* CountryData.swift in Sources */,
 				0847E9B81EBB5D56001D2CAA /* ViewController.swift in Sources */,
 				7A1CB9A51ED5B5D80065758B /* baseCurrVC.swift in Sources */,
+				7A0F70731EDDD58A00798489 /* TestVC.swift in Sources */,
 				0847E9B61EBB5D56001D2CAA /* AppDelegate.swift in Sources */,
 				7A71EA121ECB92E000EF7469 /* Constants.swift in Sources */,
+				7A9F77CA1EDD54BD00E1405A /* CityData.swift in Sources */,
+				7A9F77CC1EDDCC4900E1405A /* ProductData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

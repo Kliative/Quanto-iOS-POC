@@ -7,11 +7,17 @@
 //
 
 import UIKit
-import Firebase
+import FirebaseDatabase
 
-class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate {
-    var countryData = [CountryData]()
-    var products: Dictionary<String, AnyObject>!
+class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate, testDataSentDelegate {
+    
+    
+    var cityData = [CityData]()
+
+    
+    
+    var countryCity: Dictionary<String, AnyObject>!
+    var cityProds: Dictionary<String, AnyObject>!
     //Operation Buttons
     @IBOutlet weak var divideBtn: UIButton!
     @IBOutlet weak var subtractBtn: UIButton!
@@ -19,7 +25,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     @IBOutlet weak var addBtn: UIButton!
     @IBOutlet weak var decimalBtn: UIButton!
     
-
+    var testRef: FIRDatabaseReference!
     
     @IBOutlet weak var calculationLbl: UILabel!
     @IBOutlet weak var baseCurrencyBtn: UIButton!
@@ -28,6 +34,8 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     
     @IBOutlet weak var destinationCurrencyBtn: UIButton!
     @IBOutlet weak var destinationCurrencyLbl: UILabel!
+    
+    @IBOutlet weak var testCurrencyBtn: UIButton!
     
     var currentRates: CurrentExchange!
     
@@ -52,47 +60,57 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     
     var baseCurrSel: String!
     var destCurrSel: String!
+    var testCurrSel: String!
     
     var sortedCurrency:[String] = []
    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        
         DataService.ds.REF_COUNTRIES.observe(.value, with: { (snapshot) in
-            //            print(snapshot.value)
-            
             if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
                 for snap in snapshot {
 //                    print("----: \(snap)")
                     if let countryDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
-                        let countryData = CountryData(countryName:key,
+                        
+                        let countryDataSnap = CountryData(countryName:key,
                                                          currencyCode: countryDict["ISO4217_currency_alphabetic_code"] as! String,
                                                          currencyName: countryDict["ISO4217_currency_name"] as! String,
                                                          currencySymbol: countryDict["ISO4217_currency_symbol"] as! String,
                                                          productData:countryDict["products"] as! Dictionary<String, AnyObject>,
                                                          cities:countryDict["cities"] as! [String])
                         
-                        self.countryData.append(countryData)
+                        self.countryData.append(countryDataSnap)
                         
-                        let citiData = countryDict["cities"]
-//                        print(citiData?["Pretoria"])
+                        self.countryNameArray.append(key)
                         
-//                        print(countryData.countryName)
-//                        print(countryData.currencyCode)
-//                        print(countryData.currencyName)
-//                        print(countryData.currencySymbol)
-//                        print(countryData.coke["high"]!)
-                        print(countryData.cities)
-
+                        self.cityNameArray = countryDict["cities"] as! [String]
+                        
+                        
+                        
+//                        self.getProdData(countryKey:key, cityKey: "\(self.cityNameArray[0])")
+                        self.getCitiesProd(countryKey:key)
+//                        print(self.cityProds["\(self.cityNameArray[0])"]?["Coke"]!)
+//                        self.productsPrices = self.cityProds["\(self.cityNameArray[0])"]?["Coke"]! as! Dictionary<String, AnyObject>
+//                        
+//                        
+//                        
+//                        print(self.productsPrices["low"]!)
+//                        print(countryDataSnap.countryName)
+//                        print(countryDataSnap.currencyCode)
+//                        print(countryDataSnap.currencyName)
+//                        print(countryDataSnap.currencySymbol)
+//                        print(countryDataSnap.coke["high"]!)
+//                        print(countryDataSnap.cities)
+                        
+                        
                     }
                 }
             }
         })
-//        
+        
         currentRates = CurrentExchange()
-    
         currentRates.downloadExchangeRates {}
         
         self.decimalEnabled = true
@@ -113,6 +131,42 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             
         }
         
+    }
+    
+    func getProdData(countryKey:String, cityKey: String){
+        DataService.ds.REF_CITIES.child(countryKey).child(cityKey).observe(.value, with: { (snapshot) in
+            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
+                for snap in snapshot {
+//                    print("----: \(snap)")
+                    if let cityDict = snap.value as? Dictionary<String, AnyObject> {
+                        let key = snap.key
+                        print(key)
+                        print(cityDict)
+                        self.cityProds = cityDict
+//                        print(self.cityProds)
+                    }
+                }
+            }
+        })
+    }
+    
+    func getCitiesProd(countryKey:String){
+        DataService.ds.REF_CITIES.child(countryKey).observe(.value, with: { (snapshot) in
+            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
+                for snap in snapshot {
+                    //                    print("----: \(snap)")
+                    if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
+                        let key = snap.key
+//                        print(key)
+//                        print(countryCityDict)
+                        
+                        let cheese = CityData(cityName:key, productData:countryCityDict)
+//                        self.countryCity = countryCityDict
+                        //                        print(self.cityProds)
+                    }
+                }
+            }
+        })
     }
     
     @IBAction func numberPressed(sender: UIButton){
@@ -190,6 +244,10 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         performSegue(withIdentifier: "destCurrVCSegue", sender: self)
     }
     
+    @IBAction func testCurrencyBtnPressed(_ sender: Any) {
+        performSegue(withIdentifier: "testCurrVCSegue", sender: self)
+    }
+    
     //Operators
     @IBAction func onDividePressed(sender: AnyObject){
         
@@ -265,6 +323,10 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             let destCurrVC: destCurrVC = segue.destination as! destCurrVC
             destCurrVC.delegate = self
         }
+        if segue.identifier == "testCurrVCSegue" {
+            let testVC: TestVC = segue.destination as! TestVC
+            testVC.delegate = self
+        }
     }
     
     func disableBtns(){
@@ -311,6 +373,12 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     func userDidEnterBaseData(data: String) {
         self.baseCurrencyBtn.setTitle(data, for: .normal)
         self.baseCurrSel = data
+        
+    }
+    
+    func userDidEnterTestData(data: String) {
+        self.testCurrencyBtn.setTitle(data, for: .normal)
+        self.testCurrSel = data
         
     }
     

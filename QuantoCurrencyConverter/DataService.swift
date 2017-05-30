@@ -12,6 +12,7 @@ import FirebaseDatabase
 let DB_BASE = FIRDatabase.database().reference()
 
 
+
 class DataService {
 
     static let ds = DataService()
@@ -19,6 +20,9 @@ class DataService {
     // DB reference
     private var _REF_BASE = DB_BASE
     private var _REF_COUNTRIES = DB_BASE.child("country_data")
+    private var _REF_CITIES = DB_BASE.child("cities")
+
+    
     
     var REF_BASE: FIRDatabaseReference {
         return _REF_BASE
@@ -27,4 +31,11 @@ class DataService {
     var REF_COUNTRIES: FIRDatabaseReference {
         return _REF_COUNTRIES
     }
+    
+    var REF_CITIES: FIRDatabaseReference {
+        return _REF_CITIES
+    }
+    
+        
+    
 }
