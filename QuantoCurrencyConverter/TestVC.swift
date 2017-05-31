@@ -12,7 +12,7 @@ import FirebaseDatabase
 
 
 protocol testDataSentDelegate {
-    func userDidEnterTestData(data: String)
+    func userDidEnterTestData(data: CountryData)
 }
 
 
@@ -62,14 +62,12 @@ class TestVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UIS
                                                           cities:countryDict["cities"] as! [String])
                         
                         self.countryData.append(countryDataSnap)
-                        
-                        let cc = self.countryData[0]
-                        print(cc.countryName)
+
                         self.countryNameArray.append(key)
                         
                         self.cityNameArray = countryDict["cities"] as! [String]
 
-                        
+//                        print(countryDict["products"] as! Dictionary<String, AnyObject>)
                     }
                 }
             }
@@ -99,9 +97,9 @@ class TestVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UIS
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if isSearching {
-            return filterData.count
-        }
+//        if isSearching {
+//            return filterData.count
+//        }
         
         return countryData.count
         
@@ -110,8 +108,8 @@ class TestVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UIS
         //Assign correct Cell to countryData indexPath.row
         let countryData = self.countryData[indexPath.row]
             //send back the currency Code, see if you can send the whole object :) :)
-            let data = countryData.currencyCode
-            delegate?.userDidEnterTestData(data: data)
+//            let data = countryData.currencyCode
+            delegate?.userDidEnterTestData(data: countryData)
       
         dismiss(animated: true) {
             ViewController().reCalc()

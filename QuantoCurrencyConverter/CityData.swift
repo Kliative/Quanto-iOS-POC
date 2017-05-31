@@ -64,7 +64,6 @@ class CityData {
     
     init(cityName:String, productData:Dictionary<String, AnyObject>){
         
-//        self._countryName = countryName
         self._cityName = cityName
         
         if let coke = productData["Coke"] as? Dictionary<String, AnyObject>{

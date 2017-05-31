@@ -9,13 +9,11 @@
 import UIKit
 import FirebaseDatabase
 
-class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate, testDataSentDelegate {
-    
+class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate, testDataSentDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var cityData = [CityData]()
-
     
-    
+    @IBOutlet weak var tableView:UITableView!
     var countryCity: Dictionary<String, AnyObject>!
     var cityProds: Dictionary<String, AnyObject>!
     //Operation Buttons
@@ -35,8 +33,14 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     @IBOutlet weak var destinationCurrencyBtn: UIButton!
     @IBOutlet weak var destinationCurrencyLbl: UILabel!
     
+//    Test Data for pulling object 
     @IBOutlet weak var testCurrencyBtn: UIButton!
-    
+    var cities:[String] = []
+    @IBOutlet weak var mcmealDestLbl: UILabel!
+    @IBOutlet weak var mealDestLbl: UILabel!
+    @IBOutlet weak var domBeerDestLbl: UILabel!
+    @IBOutlet weak var cokeDestLbl: UILabel!
+    var countryKey:String!
     var currentRates: CurrentExchange!
     
     var displayRunningNumber = ""
@@ -67,6 +71,8 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.delegate = self
+        tableView.dataSource = self
                 
         currentRates = CurrentExchange()
         currentRates.downloadExchangeRates {}
@@ -88,39 +94,81 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             self.destinationCurrencyBtn.setTitle("ZAR", for: .normal)
             
         }
+        print(self.cities.count)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for:indexPath) as? CitiesCell{
+            cell.configureCityCell(cityName: self.cities[indexPath.row])
+            
+            return cell
+        } else {
+            return CitiesCell()
+        }
         
     }
-    
-    func getProdData(countryKey:String, cityKey: String){
-        DataService.ds.REF_CITIES.child(countryKey).child(cityKey).observe(.value, with: { (snapshot) in
-            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
-                for snap in snapshot {
-//                    print("----: \(snap)")
-                    if let cityDict = snap.value as? Dictionary<String, AnyObject> {
-                        let key = snap.key
-                        print(key)
-                        print(cityDict)
-                        self.cityProds = cityDict
-//                        print(self.cityProds)
-                    }
-                }
-            }
-        })
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return self.cities.count
+        
+    }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
-    func getCitiesProd(countryKey:String){
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.getCitiesProd(countryKey: self.countryKey, cityKey: self.cities[indexPath.row])
+    }
+    
+    func userDidEnterTestData(data: CountryData) {
+        self.countryKey = data.countryName
+        self.testCurrencyBtn.setTitle(data.currencyCode, for: .normal)
+        self.testCurrSel = data.currencyCode
+        self.cities = data.cities
+        self.tableView.reloadData()
+    }
+    
+//    func getProdData(countryKey:String, cityKey: String){
+//        DataService.ds.REF_CITIES.child(countryKey).child(cityKey).observe(.value, with: { (snapshot) in
+//            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
+//                for snap in snapshot {
+//                    print("----: \(snap)")
+//                    if let cityDict = snap.value as? Dictionary<String, AnyObject> {
+//                        let key = snap.key
+//                        print("------ getProdData ----- for \(cityKey) in \(countryKey)")
+//                        print(key)
+//                        print(cityDict)
+//                        self.cityProds = cityDict
+//                        let cheese = CityData(cityName:cityKey, productData:cityDict)
+//                        print(self.cityProds)
+//                        
+//                        print(cityDict)
+//                        
+//                    }
+//                }
+//            }
+//        })
+//    }
+    
+    func getCitiesProd(countryKey:String, cityKey: String){
         DataService.ds.REF_CITIES.child(countryKey).observe(.value, with: { (snapshot) in
             if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
                 for snap in snapshot {
-                    //                    print("----: \(snap)")
                     if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
-//                        print(key)
-//                        print(countryCityDict)
-                        
-                        let cheese = CityData(cityName:key, productData:countryCityDict)
-//                        self.countryCity = countryCityDict
-                        //                        print(self.cityProds)
+                        let cityProdData = CityData(cityName:key, productData:countryCityDict)
+                        self.cityData.append(cityProdData)
+                        for var i in (0..<self.cityData.count){
+                            if (self.cityData[i].cityName == cityKey)
+                            {
+                                self.cokeDestLbl.text = "\(self.cityData[i].coke["norm"]!)"
+                                self.domBeerDestLbl.text = "\(self.cityData[i].domBeer["norm"]!)"
+                                self.mealDestLbl.text = "\(self.cityData[i].meal["norm"]!)"
+                                self.mcmealDestLbl.text = "\(self.cityData[i].mcMeal["norm"]!)"
+                                
+                            }
+                        }
                     }
                 }
             }
@@ -306,7 +354,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     }
     
     func reCalc() {
-        //Currently Always returns nil for all
+//        Currently Always returns nil for all
 //        if self.destCurrSel != nil && self.baseCurrSel != nil && result != "" {
 //            let stringResult = Double(result)!
 //            let priceToConver = Double(round(stringResult))
@@ -322,9 +370,9 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
 //                print("currentOperation = \(currentOperation)")
 //                print("rightValStr = \(rightValStr)")
 //                print("result = \(result)")
-        
-        
-        print("reCalc")
+//        
+//        
+        print("Supposed to reCalc numbers on screen based on new selection")
     }
     
     
@@ -334,11 +382,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         
     }
     
-    func userDidEnterTestData(data: String) {
-        self.testCurrencyBtn.setTitle(data, for: .normal)
-        self.testCurrSel = data
-        
-    }
+
     
     func userDidEnterDestData(data: String) {
         self.destinationCurrencyBtn.setTitle(data, for: .normal)
