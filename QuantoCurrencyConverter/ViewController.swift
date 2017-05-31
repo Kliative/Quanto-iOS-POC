@@ -9,11 +9,12 @@
 import UIKit
 import FirebaseDatabase
 
-class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate, testDataSentDelegate, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate, testDataSentDelegate, testBaseDataSentDelegate,UITableViewDataSource, UITableViewDelegate {
     
     var cityData = [CityData]()
     
     @IBOutlet weak var tableView:UITableView!
+    @IBOutlet weak var baseTesttableView:UITableView!
     var countryCity: Dictionary<String, AnyObject>!
     var cityProds: Dictionary<String, AnyObject>!
     //Operation Buttons
@@ -23,23 +24,34 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     @IBOutlet weak var addBtn: UIButton!
     @IBOutlet weak var decimalBtn: UIButton!
     
-    var testRef: FIRDatabaseReference!
     
     @IBOutlet weak var calculationLbl: UILabel!
     @IBOutlet weak var baseCurrencyBtn: UIButton!
     @IBOutlet weak var baseCurrencyLbl: UILabel!
-    
     
     @IBOutlet weak var destinationCurrencyBtn: UIButton!
     @IBOutlet weak var destinationCurrencyLbl: UILabel!
     
 //    Test Data for pulling object 
     @IBOutlet weak var testCurrencyBtn: UIButton!
+    @IBOutlet weak var testBaseCurrencyBtn: UIButton!
+    var baseCities:[String] = []
     var cities:[String] = []
     @IBOutlet weak var mcmealDestLbl: UILabel!
     @IBOutlet weak var mealDestLbl: UILabel!
     @IBOutlet weak var domBeerDestLbl: UILabel!
     @IBOutlet weak var cokeDestLbl: UILabel!
+    
+    @IBOutlet weak var mcmealBaseLbl: UILabel!
+    @IBOutlet weak var mealBaseLbl: UILabel!
+    @IBOutlet weak var domBeerBaseLbl: UILabel!
+    @IBOutlet weak var cokeBaseLbl: UILabel!
+    
+    var baseCurrSymbol: String!
+    var destCurrSymbol: String!
+    
+    
+    
     var countryKey:String!
     var currentRates: CurrentExchange!
     
@@ -65,7 +77,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     var baseCurrSel: String!
     var destCurrSel: String!
     var testCurrSel: String!
-    
+//    
     var sortedCurrency:[String] = []
    
     override func viewDidLoad() {
@@ -73,7 +85,10 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         
         tableView.delegate = self
         tableView.dataSource = self
-                
+        
+        baseTesttableView.delegate = self
+        baseTesttableView.dataSource = self
+        
         currentRates = CurrentExchange()
         currentRates.downloadExchangeRates {}
         
@@ -90,66 +105,75 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         if self.destCurrSel == nil || self.baseCurrSel == nil {
             self.destCurrSel = "ZAR"
             self.baseCurrSel = "GBP"
-            self.baseCurrencyBtn.setTitle("GBP", for: .normal)
-            self.destinationCurrencyBtn.setTitle("ZAR", for: .normal)
+            self.baseCurrencyBtn.setTitle("United Kingdom [GBP]", for: .normal)
+            self.destinationCurrencyBtn.setTitle("South Africa [ZAR]", for: .normal)
             
         }
-        print(self.cities.count)
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for:indexPath) as? CitiesCell{
-            cell.configureCityCell(cityName: self.cities[indexPath.row])
-            
-            return cell
+        if tableView == self.tableView {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for:indexPath) as? CitiesCell{
+                cell.configureCityCell(cityName: self.cities[indexPath.row])
+                
+                return cell
+            } else {
+                return CitiesCell()
+            }
+        }else{
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "CityBaseCell", for:indexPath) as? CitiesCell{
+                cell.configureCityCell(cityName: self.baseCities[indexPath.row])
+                
+                return cell
+            } else {
+                return CitiesCell()
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if tableView == self.tableView {
+                return self.cities.count
         } else {
-            return CitiesCell()
+                return self.baseCities.count
         }
         
     }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return self.cities.count
-        
-    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.getCitiesProd(countryKey: self.countryKey, cityKey: self.cities[indexPath.row])
+        
+        if tableView == self.tableView {
+            self.getCitiesProd(countryKey: self.countryKey, cityKey: self.cities[indexPath.row])
+        } else {
+            self.getBaseCitiesProd(countryKey: self.countryKey, cityKey: self.baseCities[indexPath.row])
+        }
+        
     }
     
     func userDidEnterTestData(data: CountryData) {
         self.countryKey = data.countryName
-        self.testCurrencyBtn.setTitle(data.currencyCode, for: .normal)
-        self.testCurrSel = data.currencyCode
+        self.testCurrencyBtn.setTitle("\(data.countryName) [\(data.currencyCode)]", for: .normal)
+        self.destCurrSel = data.currencyCode
+        self.destCurrSymbol = data.currencySymbol
         self.cities = data.cities
         self.tableView.reloadData()
     }
     
-//    func getProdData(countryKey:String, cityKey: String){
-//        DataService.ds.REF_CITIES.child(countryKey).child(cityKey).observe(.value, with: { (snapshot) in
-//            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
-//                for snap in snapshot {
-//                    print("----: \(snap)")
-//                    if let cityDict = snap.value as? Dictionary<String, AnyObject> {
-//                        let key = snap.key
-//                        print("------ getProdData ----- for \(cityKey) in \(countryKey)")
-//                        print(key)
-//                        print(cityDict)
-//                        self.cityProds = cityDict
-//                        let cheese = CityData(cityName:cityKey, productData:cityDict)
-//                        print(self.cityProds)
-//                        
-//                        print(cityDict)
-//                        
-//                    }
-//                }
-//            }
-//        })
-//    }
+    func userDidEnterTestBaseData(data: CountryData) {
+        self.countryKey = data.countryName
+        self.testBaseCurrencyBtn.setTitle("\(data.countryName) [\(data.currencyCode)]", for: .normal)
+        self.baseCurrSel = data.currencyCode
+        self.baseCities = data.cities
+        self.baseCurrSymbol = data.currencySymbol
+        self.baseTesttableView.reloadData()
+    }
     
     func getCitiesProd(countryKey:String, cityKey: String){
         DataService.ds.REF_CITIES.child(countryKey).observe(.value, with: { (snapshot) in
@@ -162,10 +186,34 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                         for var i in (0..<self.cityData.count){
                             if (self.cityData[i].cityName == cityKey)
                             {
-                                self.cokeDestLbl.text = "\(self.cityData[i].coke["norm"]!)"
-                                self.domBeerDestLbl.text = "\(self.cityData[i].domBeer["norm"]!)"
-                                self.mealDestLbl.text = "\(self.cityData[i].meal["norm"]!)"
-                                self.mcmealDestLbl.text = "\(self.cityData[i].mcMeal["norm"]!)"
+                                self.cokeDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].coke["norm"]!)"
+                                self.domBeerDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].domBeer["norm"]!)"
+                                self.mealDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].meal["norm"]!)"
+                                self.mcmealDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].mcMeal["norm"]!)"
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+    
+    func getBaseCitiesProd(countryKey:String, cityKey: String){
+        DataService.ds.REF_CITIES.child(countryKey).observe(.value, with: { (snapshot) in
+            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
+                for snap in snapshot {
+                    if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
+                        let key = snap.key
+                        let cityProdData = CityData(cityName:key, productData:countryCityDict)
+                        self.cityData.append(cityProdData)
+                        for var i in (0..<self.cityData.count){
+                            if (self.cityData[i].cityName == cityKey)
+                            {
+                                self.cokeBaseLbl.text = "\(self.baseCurrSymbol!) \(self.cityData[i].coke["norm"]!)"
+                                self.domBeerBaseLbl.text = "\(self.baseCurrSymbol!) \(self.cityData[i].domBeer["norm"]!)"
+                                self.mealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.cityData[i].meal["norm"]!)"
+                                self.mcmealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.cityData[i].mcMeal["norm"]!)"
                                 
                             }
                         }
@@ -333,6 +381,10 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             let testVC: TestVC = segue.destination as! TestVC
             testVC.delegate = self
         }
+        if segue.identifier == "testBaseCurrVCSegue" {
+            let testBaseVC: TestBaseVC = segue.destination as! TestBaseVC
+            testBaseVC.delegate = self
+        }
     }
     
     func disableBtns(){
@@ -383,7 +435,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     }
     
 
-    
     func userDidEnterDestData(data: String) {
         self.destinationCurrencyBtn.setTitle(data, for: .normal)
         self.destCurrSel = data
