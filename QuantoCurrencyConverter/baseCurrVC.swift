@@ -1,20 +1,25 @@
 //
-//  baseCurrVC.swift
+//  TestBaseVC.swift
 //  QuantoCurrencyConverter
 //
-//  Created by Tawanda Kanyangarara on 2017/05/24.
+//  Created by Tawanda Kanyangarara on 2017/05/31.
 //  Copyright © 2017 Tawanda Kanyangarara. All rights reserved.
 //
 
 import UIKit
-
+import FirebaseDatabase
 
 protocol baseDataSentDelegate {
-    func userDidEnterBaseData(data: String)
+    func userDidEnterBaseData(data: CountryData)
 }
 
-class baseCurrVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
 
+class baseCurrVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+    var countryData = [CountryData]()
+    
+    var cityNameArray:[String] = []
+    var countryNameArray:[String] = []
+    
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var searchBar: UISearchBar!
@@ -27,7 +32,7 @@ class baseCurrVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     var sortedCurrency:[String] = []
     
     var currentRates: CurrentExchange!
-     var delegate: baseDataSentDelegate? = nil
+    var delegate: baseDataSentDelegate? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,60 +43,70 @@ class baseCurrVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         searchBar.delegate = self
         searchBar.returnKeyType = UIReturnKeyType.done
         
-        currentRates = CurrentExchange()
-        
-        currentRates.downloadExchangeRates {
-            
-           //Arranges Array in Alphabetical Order
-            self.sortedCurrency = self.currentRates.sortedCurrency
-            
+        DataService.ds.REF_COUNTRIES.observe(.value, with: { (snapshot) in
+            self.countryData = []
+            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
+                for snap in snapshot {
+                    
+                    if let countryDict = snap.value as? Dictionary<String, AnyObject> {
+                        let key = snap.key
+                        
+                        let countryDataSnap = CountryData(countryName:key,
+                                                          currencyCode: countryDict["ISO4217_currency_alphabetic_code"] as! String,
+                                                          currencyName: countryDict["ISO4217_currency_name"] as! String,
+                                                          currencySymbol: countryDict["ISO4217_currency_symbol"] as! String,
+                                                          productData:countryDict["products"] as! Dictionary<String, AnyObject>,
+                                                          cities:countryDict["cities"] as! [String])
+                        
+                        self.countryData.append(countryDataSnap)
+                        
+                        self.countryNameArray.append(key)
+                        
+                        self.cityNameArray = countryDict["cities"] as! [String]
+                        
+                        //                        print(countryDict["products"] as! Dictionary<String, AnyObject>)
+                    }
+                }
+            }
             self.tableView.reloadData()
-        }
+        })
+        
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //Assign correct Cell to countryData indexPath.row
+        let countryData = self.countryData[indexPath.row]
         
-        
-        
-            let text: String!
-        
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "baseCurrCell", for:indexPath) as? CurrencyCell{
-                
-                if isSearching {
-                    text = filterData[indexPath.row]
-                } else {
-                    text = self.sortedCurrency[indexPath.row]
-                }
-                
-                cell.configureCurrencyCell(currencyName: text)
-                
-                return cell
-                
-            } else {
-                return CurrencyCell()
-            }
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "testBaseCurrCell", for:indexPath) as? CurrencyCell{
+            
+            
+            //sends throught country Name to cells, create better cellconfig and add more data
+            cell.configureCurrencyCell(currencyName: countryData.countryName)
+            
+            return cell
+            
+        } else {
+            return CurrencyCell()
+        }
         
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if isSearching {
-            return filterData.count
-        }
+        //        if isSearching {
+        //            return filterData.count
+        //        }
         
-        return self.currentRates.myCurrency.count
+        return countryData.count
         
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if isSearching {
-            let data = filterData[indexPath.row]
-            delegate?.userDidEnterBaseData(data: data)
-        } else {
-            let data = self.sortedCurrency[indexPath.row]
-            delegate?.userDidEnterBaseData(data: data)
-        }
+        //Assign correct Cell to countryData indexPath.row
+        let countryData = self.countryData[indexPath.row]
+        //send back the currency Code, see if you can send the whole object :) :)
+        //            let data = countryData.currencyCode
+        delegate?.userDidEnterBaseData(data: countryData)
         
         dismiss(animated: true) {
             ViewController().reCalc()
@@ -118,5 +133,5 @@ class baseCurrVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         
         dismiss(animated: true, completion: nil)
     }
-
+    
 }

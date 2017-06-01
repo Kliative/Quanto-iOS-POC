@@ -11,13 +11,13 @@ import FirebaseDatabase
 
 
 
-protocol testDataSentDelegate {
-    func userDidEnterTestData(data: CountryData)
+protocol destDataSentDelegate {
+    func userDidEnterDestData(data: CountryData)
 }
 
 
 
-class TestVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class destCurrVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     var countryData = [CountryData]()
     
     var cityNameArray:[String] = []
@@ -35,7 +35,7 @@ class TestVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UIS
     var sortedCurrency:[String] = []
     
     var currentRates: CurrentExchange!
-    var delegate: testDataSentDelegate? = nil
+    var delegate: destDataSentDelegate? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,7 +109,7 @@ class TestVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UIS
         let countryData = self.countryData[indexPath.row]
             //send back the currency Code, see if you can send the whole object :) :)
 //            let data = countryData.currencyCode
-            delegate?.userDidEnterTestData(data: countryData)
+            delegate?.userDidEnterDestData(data: countryData)
       
         dismiss(animated: true) {
             ViewController().reCalc()
