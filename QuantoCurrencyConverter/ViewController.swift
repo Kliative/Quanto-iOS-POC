@@ -12,9 +12,16 @@ import FirebaseDatabase
 class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate, UITableViewDataSource, UITableViewDelegate {
     
     var cityData = [CityData]()
+    var baseCityData = [CityData]()
+    
+    var capitalName:String!
+    
+    var isBaseFull = false
+    var isDestFull = false
     
     @IBOutlet weak var tableView:UITableView!
     @IBOutlet weak var baseTesttableView:UITableView!
+    @IBOutlet weak var productTableView:UITableView!
     var countryCity: Dictionary<String, AnyObject>!
     var cityProds: Dictionary<String, AnyObject>!
     //Operation Buttons
@@ -89,6 +96,9 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         baseTesttableView.delegate = self
         baseTesttableView.dataSource = self
         
+        productTableView.delegate = self
+        productTableView.dataSource = self
+        
         currentRates = CurrentExchange()
         currentRates.downloadExchangeRates {}
         
@@ -132,6 +142,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             self.getCitiesProd(countryKey: self.countryKey, cityKey: self.cities[self.cityIndexRow], productRange: self.productRangeSel)
             self.getBaseCitiesProd(countryKey: self.countryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
         }
+        self.productTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -144,7 +155,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             } else {
                 return CitiesCell()
             }
-        }else{
+        }else if tableView == self.baseTesttableView {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "CityBaseCell", for:indexPath) as? CitiesCell{
                 cell.configureCityCell(cityName: self.baseCities[indexPath.row])
                 
@@ -152,15 +163,25 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             } else {
                 return CitiesCell()
             }
+        } else {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for:indexPath) as? ProductCell{
+                cell.configureProductCell(baseCity:self.baseCityData[indexPath.row], destCity:self.cityData[indexPath.row], productRange:self.productRangeSel, baseCurr:self.baseCurrSel, destCurr: self.destCurrSel, destCurrSymbol: self.destCurrSymbol, baseCurrSymbol: self.baseCurrSymbol, indexPath: indexPath.row)
+               
+                return cell
+            } else {
+                return ProductCell()
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if tableView == self.tableView {
-                return self.cities.count
+            return self.cities.count
+        } else if tableView == self.productTableView {
+            return self.baseCityData.count
         } else {
-                return self.baseCities.count
+            return self.baseCities.count
         }
         
     }
@@ -175,8 +196,21 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         
         if tableView == self.tableView {
             self.getCitiesProd(countryKey: self.countryKey, cityKey: self.cities[self.cityIndexRow], productRange: self.productRangeSel)
-        } else {
+            self.isDestFull = true
+            
+            if self.isDestFull && self.isBaseFull {
+                self.productTableView.reloadData()
+            }
+        }
+        else {
             self.getBaseCitiesProd(countryKey: self.countryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+            print("\(self.countryKey) \(self.baseCities[self.cityIndexRow]) \(self.productRangeSel) \(self.cityIndexRow)")
+            self.isBaseFull = true
+            
+            if self.isDestFull && self.isBaseFull {
+                self.productTableView.reloadData()
+            }
+            
         }
         
     }
@@ -196,6 +230,9 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         self.baseCurrSel = data.currencyCode
         self.baseCities = data.cities
         self.baseCurrSymbol = data.currencySymbol
+        self.capitalName = data.capitalName
+        self.getBaseCapitalProd(countryKey: data.countryName
+            , cityKey: data.capitalName, productRange: self.productRangeSel)
         self.baseTesttableView.reloadData()
     }
     
@@ -207,14 +244,12 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                         let key = snap.key
                         let cityProdData = CityData(cityName:key, productData:countryCityDict)
                         self.cityData.append(cityProdData)
-                        for var i in (0..<self.cityData.count){
-                            if (self.cityData[i].cityName == cityKey)
-                            {
+                        for i in (0..<self.cityData.count){
+                            if (self.cityData[i].cityName == cityKey) {
                                 self.cokeDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].coke[self.productRangeSel]!)"
                                 self.domBeerDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].domBeer[self.productRangeSel]!)"
                                 self.mealDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].meal[self.productRangeSel]!)"
                                 self.mcmealDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].mcMeal[self.productRangeSel]!)"
-                                
                             }
                         }
                     }
@@ -230,14 +265,14 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                     if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
                         let cityProdData = CityData(cityName:key, productData:countryCityDict)
-                        self.cityData.append(cityProdData)
-                        for var i in (0..<self.cityData.count){
-                            if (self.cityData[i].cityName == cityKey)
+                        self.baseCityData.append(cityProdData)
+                        for i in (0..<self.baseCityData.count){
+                            if (self.baseCityData[i].cityName == cityKey)
                             {
-                                self.cokeBaseLbl.text = "\(self.baseCurrSymbol!) \(self.cityData[i].coke[self.productRangeSel]!)"
-                                self.domBeerBaseLbl.text = "\(self.baseCurrSymbol!) \(self.cityData[i].domBeer[self.productRangeSel]!)"
-                                self.mealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.cityData[i].meal[self.productRangeSel]!)"
-                                self.mcmealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.cityData[i].mcMeal[self.productRangeSel]!)"
+                                self.cokeBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].coke[self.productRangeSel]!)"
+                                self.domBeerBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].domBeer[self.productRangeSel]!)"
+                                self.mealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].meal[self.productRangeSel]!)"
+                                self.mcmealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].mcMeal[self.productRangeSel]!)"
                                 
                             }
                         }
@@ -245,6 +280,30 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                 }
             }
         })
+    }
+    func getBaseCapitalProd(countryKey:String, cityKey: String, productRange: String){
+        DataService.ds.REF_CITIES.child(countryKey).observe(.value, with: { (snapshot) in
+            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
+                for snap in snapshot {
+                    if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
+                        let key = snap.key
+                        let cityProdData = CityData(cityName:key, productData:countryCityDict)
+                        self.baseCityData.append(cityProdData)
+                        for i in (0..<self.baseCityData.count){
+                            if (self.baseCityData[i].cityName == cityKey)
+                            {
+                                self.cokeBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].coke[self.productRangeSel]!)"
+                                self.domBeerBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].domBeer[self.productRangeSel]!)"
+                                self.mealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].meal[self.productRangeSel]!)"
+                                self.mcmealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].mcMeal[self.productRangeSel]!)"
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        print("Done")
     }
     
     @IBAction func numberPressed(sender: UIButton){

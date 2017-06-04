@@ -58,7 +58,7 @@ class destCurrVC:  UIViewController, UITableViewDelegate, UITableViewDataSource,
                                                           currencyCode: countryDict["ISO4217_currency_alphabetic_code"] as! String,
                                                           currencyName: countryDict["ISO4217_currency_name"] as! String,
                                                           currencySymbol: countryDict["ISO4217_currency_symbol"] as! String,
-                                                          productData:countryDict["products"] as! Dictionary<String, AnyObject>,
+                                                          capitalName:countryDict["Capital"] as! String,
                                                           cities:countryDict["cities"] as! [String])
                         
                         self.countryData.append(countryDataSnap)
@@ -67,7 +67,7 @@ class destCurrVC:  UIViewController, UITableViewDelegate, UITableViewDataSource,
                         
                         self.cityNameArray = countryDict["cities"] as! [String]
 
-//                        print(countryDict["products"] as! Dictionary<String, AnyObject>)
+                        print(countryDict["Capital"] as! String)
                     }
                 }
             }

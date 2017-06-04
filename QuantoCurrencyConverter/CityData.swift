@@ -24,6 +24,7 @@ class CityData {
     private var _waterBottle:Dictionary<String, AnyObject>!
     private var _wineBottle:Dictionary<String, AnyObject>!
     
+    private var _productData:Dictionary<String, AnyObject>!
     
     var countryName:String{
         return _countryName
@@ -62,9 +63,22 @@ class CityData {
         return _wineBottle
     }
     
+    var productData:Dictionary<String, AnyObject>{
+        return _productData
+    }
+    
     init(cityName:String, productData:Dictionary<String, AnyObject>){
         
         self._cityName = cityName
+        
+        
+        self._productData = productData
+        
+//        for (key, value) in productData {
+//            print(key)
+//            print(value)
+//        }
+//        
         
         if let coke = productData["Coke"] as? Dictionary<String, AnyObject>{
             self._coke = coke
