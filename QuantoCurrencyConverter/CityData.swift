@@ -25,6 +25,7 @@ class CityData {
     private var _wineBottle:Dictionary<String, AnyObject>!
     
     private var _productData:Dictionary<String, AnyObject>!
+    private var _productListCount:Int!
     
     var countryName:String{
         return _countryName
@@ -66,14 +67,17 @@ class CityData {
     var productData:Dictionary<String, AnyObject>{
         return _productData
     }
-    
-    init(cityName:String, productData:Dictionary<String, AnyObject>){
+
+    var productListCount:Int{
+        return _productListCount
+    }
+
+    init(cityName:String, countryName: String, productData:Dictionary<String, AnyObject>){
         
         self._cityName = cityName
-        
-        
+        self._countryName = countryName
         self._productData = productData
-        
+        self._productListCount = productData.count
 //        for (key, value) in productData {
 //            print(key)
 //            print(value)

@@ -61,12 +61,12 @@ class CurrentExchange {
         let destCurrRate = self.rates[dest]
         let baseCurrRate = self.rates[base]
         
-        let price = price
+        let priceToCalc = price
         
         //Decommissions USD as Base Currency and Allows base:String to act as Base Currency
         let baseToDollar = 1 / baseCurrRate!
         let finalConv = baseToDollar*destCurrRate!
-        let calcResult = "\(finalConv*price)"
+        let calcResult = "\(finalConv*priceToCalc)"
         
         return calcResult
     }

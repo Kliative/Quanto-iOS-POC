@@ -8,6 +8,9 @@
 
 import UIKit
 
+
+
+
 class ProductCell: UITableViewCell {
 var currentRates: CurrentExchange!
     
@@ -20,19 +23,31 @@ var currentRates: CurrentExchange!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
     }
 
-    func configureProductCell(baseCity:CityData, destCity:CityData, productRange: String, baseCurr: String, destCurr:String, destCurrSymbol:String, baseCurrSymbol:String, indexPath: Int){
+    func configureProductCell(productRange: String, baseCurr: String, destCurr:String, destCurrSymbol:String, baseCurrSymbol:String, indexPath: Int, baseCityProdList:Dictionary<String, AnyObject>, destCityProdList:Dictionary<String, AnyObject>){
+        currentRates = CurrentExchange()
+       
         
-        
-        
-        let baseProdObj = Array(baseCity.productData)[indexPath]
+    
+        let baseProdObj = Array(baseCityProdList)[indexPath]
         let basePriceString = baseProdObj.value[productRange] as! String
         
-        let destProdObj = Array(destCity.productData)[indexPath]
+        let destProdObj = Array(destCityProdList)[indexPath]
         let destPriceString = destProdObj.value[productRange] as! String
         
-        if baseProdObj.key == destProdObj.key{
+        
+        let destPriceDouble = Double(destPriceString)!
+        
+        
+        let baseCurrT = baseCurr
+        let destCurrT = destCurr
+        print("\(baseCurr)\(basePriceString) - \(destCurr) \(destPriceString) | \(baseProdObj.key) + \(destProdObj.key)")
+//        let convertedPrice = Double(self.currentRates.doConvertion(dest: destCurrT, base: baseCurrT, price: destPriceDouble))!
+//        print(convertedPrice)
+        if baseProdObj.key == destProdObj.key {
+            
             productType.text = baseProdObj.key
             
             basePrice.text = "\(baseCurrSymbol) \(basePriceString)"
@@ -40,7 +55,7 @@ var currentRates: CurrentExchange!
            
             
     //        if needed != nil {
-    //             print(self.currentRates.doConvertion(dest: destCurr, base: baseCurr, price: needed!))
+            
     //        } else {
     //            print("Bombed")
     //        }

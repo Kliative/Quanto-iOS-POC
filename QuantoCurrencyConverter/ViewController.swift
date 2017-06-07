@@ -11,16 +11,20 @@ import FirebaseDatabase
 
 class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate, UITableViewDataSource, UITableViewDelegate {
     
-    var cityData = [CityData]()
+    var destCityData = [CityData]()
     var baseCityData = [CityData]()
+    var baseCapitalData = [CityData]()
     
+    var productList:Int!
+    var destProdListDict: Dictionary<String, AnyObject>!
+    var baseProdListDict: Dictionary<String, AnyObject>!
     var capitalName:String!
     
     var isBaseFull = false
     var isDestFull = false
     
-    @IBOutlet weak var tableView:UITableView!
-    @IBOutlet weak var baseTesttableView:UITableView!
+    @IBOutlet weak var destTableView:UITableView!
+    @IBOutlet weak var baseTableView:UITableView!
     @IBOutlet weak var productTableView:UITableView!
     var countryCity: Dictionary<String, AnyObject>!
     var cityProds: Dictionary<String, AnyObject>!
@@ -43,7 +47,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     @IBOutlet weak var destinationCurrencyBtn: UIButton!
     @IBOutlet weak var baseCurrencyBtn: UIButton!
     var baseCities:[String] = []
-    var cities:[String] = []
+    var destCities:[String] = []
     @IBOutlet weak var mcmealDestLbl: UILabel!
     @IBOutlet weak var mealDestLbl: UILabel!
     @IBOutlet weak var domBeerDestLbl: UILabel!
@@ -59,7 +63,8 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     var baseCurrSymbol: String!
     var destCurrSymbol: String!
     
-    var countryKey:String!
+    var destCountryKey:String!
+    var baseCountryKey:String!
     var currentRates: CurrentExchange!
     
     var displayRunningNumber = ""
@@ -89,12 +94,12 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.productList = 0
+        destTableView.delegate = self
+        destTableView.dataSource = self
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        baseTesttableView.delegate = self
-        baseTesttableView.dataSource = self
+        baseTableView.delegate = self
+        baseTableView.dataSource = self
         
         productTableView.delegate = self
         productTableView.dataSource = self
@@ -109,10 +114,14 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         baseCurrencyLbl.text = "0"
         destinationCurrencyLbl.text = "Select Countries to Convert"
         destinationCurrencyLbl.textColor = UIColor(red:0/255, green:0/255, blue:0/255, alpha:0.2)
+        
         self.baseCurrencyBtn.contentHorizontalAlignment = .left
         self.destinationCurrencyBtn.contentHorizontalAlignment = .left
         
         self.productRangeSel = "norm"
+        
+        self.destProdListDict = [:]
+        self.baseProdListDict = [:]
         
         self.disableBtns()
         
@@ -130,32 +139,35 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         if sender.tag == 10{
             self.productRangeSel = "low"
             
-            self.getCitiesProd(countryKey: self.countryKey, cityKey: self.cities[self.cityIndexRow], productRange: self.productRangeSel)
-            self.getBaseCitiesProd(countryKey: self.countryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+            self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+            self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+            self.productTableView.reloadData()
             
         } else if sender.tag == 11 {
             self.productRangeSel = "norm"
-            self.getCitiesProd(countryKey: self.countryKey, cityKey: self.cities[self.cityIndexRow], productRange: self.productRangeSel)
-            self.getBaseCitiesProd(countryKey: self.countryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+            self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+            self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+            self.productTableView.reloadData()
         } else {
             self.productRangeSel = "high"
-            self.getCitiesProd(countryKey: self.countryKey, cityKey: self.cities[self.cityIndexRow], productRange: self.productRangeSel)
-            self.getBaseCitiesProd(countryKey: self.countryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+            self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+            self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+            self.productTableView.reloadData()
         }
-        self.productTableView.reloadData()
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if tableView == self.tableView {
+        if tableView == self.destTableView {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for:indexPath) as? CitiesCell{
-                cell.configureCityCell(cityName: self.cities[indexPath.row])
+                cell.configureCityCell(cityName: self.destCities[indexPath.row])
                 
                 return cell
             } else {
                 return CitiesCell()
             }
-        }else if tableView == self.baseTesttableView {
+        }else if tableView == self.baseTableView {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "CityBaseCell", for:indexPath) as? CitiesCell{
                 cell.configureCityCell(cityName: self.baseCities[indexPath.row])
                 
@@ -165,7 +177,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             }
         } else {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for:indexPath) as? ProductCell{
-                cell.configureProductCell(baseCity:self.baseCityData[indexPath.row], destCity:self.cityData[indexPath.row], productRange:self.productRangeSel, baseCurr:self.baseCurrSel, destCurr: self.destCurrSel, destCurrSymbol: self.destCurrSymbol, baseCurrSymbol: self.baseCurrSymbol, indexPath: indexPath.row)
+                cell.configureProductCell(productRange:self.productRangeSel, baseCurr:self.baseCurrSel, destCurr: self.destCurrSel, destCurrSymbol: self.destCurrSymbol, baseCurrSymbol: self.baseCurrSymbol, indexPath: indexPath.row, baseCityProdList: self.baseProdListDict, destCityProdList: self.destProdListDict)
                
                 return cell
             } else {
@@ -176,12 +188,20 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if tableView == self.tableView {
-            return self.cities.count
-        } else if tableView == self.productTableView {
-            return self.baseCityData.count
-        } else {
+        if tableView == self.destTableView {
+            return self.destCities.count
+        } else if tableView == self.baseTableView {
             return self.baseCities.count
+        } else {
+            print("-: baseProdlistDict.count -- \(self.destProdListDict.count)")
+            print("-: destProdlistDict.count -- \(self.baseProdListDict.count)")
+            
+            if self.baseProdListDict.count == self.destProdListDict.count {
+                    return self.baseProdListDict.count
+            } else {
+                return self.baseCityData.count
+            }
+        
         }
         
     }
@@ -194,17 +214,20 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         
         self.cityIndexRow = indexPath.row
         
-        if tableView == self.tableView {
-            self.getCitiesProd(countryKey: self.countryKey, cityKey: self.cities[self.cityIndexRow], productRange: self.productRangeSel)
+        if tableView == self.destTableView {
+            self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+           
+            print("-: destCity at index row \(self.destCities[self.cityIndexRow])")
             self.isDestFull = true
             
             if self.isDestFull && self.isBaseFull {
                 self.productTableView.reloadData()
+                
+                
             }
-        }
-        else {
-            self.getBaseCitiesProd(countryKey: self.countryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
-            print("\(self.countryKey) \(self.baseCities[self.cityIndexRow]) \(self.productRangeSel) \(self.cityIndexRow)")
+        } else if tableView == self.baseTableView{
+            self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+            print("-: baseCity at index row \(self.baseCities[self.cityIndexRow])")
             self.isBaseFull = true
             
             if self.isDestFull && self.isBaseFull {
@@ -216,40 +239,50 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     }
     
     func userDidEnterDestData(data: CountryData) {
-        self.countryKey = data.countryName
+        self.destCountryKey = data.countryName
         self.destinationCurrencyBtn.setTitle("\(data.countryName) [\(data.currencyCode)]", for: .normal)
         self.destCurrSel = data.currencyCode
         self.destCurrSymbol = data.currencySymbol
-        self.cities = data.cities
-        self.tableView.reloadData()
+        self.destCities = data.cities
+        self.getDestCitiesProd(countryKey: data.countryName
+            , cityKey: data.capitalName, productRange: self.productRangeSel)
+        self.destTableView.reloadData()
     }
     
     func userDidEnterBaseData(data: CountryData) {
-        self.countryKey = data.countryName
+        self.baseCountryKey = data.countryName
         self.baseCurrencyBtn.setTitle("\(data.countryName) [\(data.currencyCode)]", for: .normal)
         self.baseCurrSel = data.currencyCode
         self.baseCities = data.cities
         self.baseCurrSymbol = data.currencySymbol
-        self.capitalName = data.capitalName
-        self.getBaseCapitalProd(countryKey: data.countryName
+        self.getBaseCitiesProd(countryKey: data.countryName
             , cityKey: data.capitalName, productRange: self.productRangeSel)
-        self.baseTesttableView.reloadData()
+        self.baseTableView.reloadData()
     }
     
-    func getCitiesProd(countryKey:String, cityKey: String, productRange: String){
+    func getDestCitiesProd(countryKey:String, cityKey: String, productRange: String){
+        print("--- running: getDestCitiesProd")
         DataService.ds.REF_CITIES.child(countryKey).observe(.value, with: { (snapshot) in
             if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
                 for snap in snapshot {
                     if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
-                        let cityProdData = CityData(cityName:key, productData:countryCityDict)
-                        self.cityData.append(cityProdData)
-                        for i in (0..<self.cityData.count){
-                            if (self.cityData[i].cityName == cityKey) {
-                                self.cokeDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].coke[self.productRangeSel]!)"
-                                self.domBeerDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].domBeer[self.productRangeSel]!)"
-                                self.mealDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].meal[self.productRangeSel]!)"
-                                self.mcmealDestLbl.text = "\(self.destCurrSymbol!) \(self.cityData[i].mcMeal[self.productRangeSel]!)"
+                        let destCityProdData = CityData(cityName:key, countryName:countryKey, productData:countryCityDict)
+                        
+                        self.destProdListDict = destCityProdData.productData
+                        
+                        if self.destCityData.isEmpty {
+                            self.destCityData.append(destCityProdData)
+                        } else {
+                            self.destCityData.removeAll()
+                            self.destCityData.append(destCityProdData)
+                        }
+                        for i in (0..<self.destCityData.count){
+                            if (self.destCityData[i].cityName == cityKey) {
+                                self.cokeDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].coke[self.productRangeSel]!)"
+                                self.domBeerDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].domBeer[self.productRangeSel]!)"
+                                self.mealDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].meal[self.productRangeSel]!)"
+                                self.mcmealDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].mcMeal[self.productRangeSel]!)"
                             }
                         }
                     }
@@ -259,16 +292,25 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     }
     
     func getBaseCitiesProd(countryKey:String, cityKey: String, productRange: String){
+        print("--- running: getBaseCitiesProd")
         DataService.ds.REF_CITIES.child(countryKey).observe(.value, with: { (snapshot) in
             if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
                 for snap in snapshot {
                     if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
-                        let cityProdData = CityData(cityName:key, productData:countryCityDict)
-                        self.baseCityData.append(cityProdData)
+                        let baseCityProdData = CityData(cityName:key, countryName: countryKey, productData:countryCityDict)
+                        self.baseProdListDict = baseCityProdData.productData
+                        if self.baseCityData.isEmpty {
+                            self.baseCityData.append(baseCityProdData)
+                        } else {
+                            self.baseCityData.removeAll()
+                            self.baseCityData.append(baseCityProdData)
+                        }
+                        self.productList = self.baseCityData[0].productListCount
                         for i in (0..<self.baseCityData.count){
                             if (self.baseCityData[i].cityName == cityKey)
                             {
+                                print(self.productList)
                                 self.cokeBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].coke[self.productRangeSel]!)"
                                 self.domBeerBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].domBeer[self.productRangeSel]!)"
                                 self.mealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].meal[self.productRangeSel]!)"
@@ -279,31 +321,8 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                     }
                 }
             }
+            
         })
-    }
-    func getBaseCapitalProd(countryKey:String, cityKey: String, productRange: String){
-        DataService.ds.REF_CITIES.child(countryKey).observe(.value, with: { (snapshot) in
-            if let snapshot = snapshot.children.allObjects as? [FIRDataSnapshot]{
-                for snap in snapshot {
-                    if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
-                        let key = snap.key
-                        let cityProdData = CityData(cityName:key, productData:countryCityDict)
-                        self.baseCityData.append(cityProdData)
-                        for i in (0..<self.baseCityData.count){
-                            if (self.baseCityData[i].cityName == cityKey)
-                            {
-                                self.cokeBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].coke[self.productRangeSel]!)"
-                                self.domBeerBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].domBeer[self.productRangeSel]!)"
-                                self.mealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].meal[self.productRangeSel]!)"
-                                self.mcmealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].mcMeal[self.productRangeSel]!)"
-                                
-                            }
-                        }
-                    }
-                }
-            }
-        })
-        print("Done")
     }
     
     @IBAction func numberPressed(sender: UIButton){
@@ -480,24 +499,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     }
     
     func reCalc() {
-//        Currently Always returns nil for all
-//        if self.destCurrSel != nil && self.baseCurrSel != nil && result != "" {
-//            let stringResult = Double(result)!
-//            let priceToConver = Double(round(stringResult))
-//            
-//            let convertedAmount = Double(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
-//            
-//            destinationCurrencyLbl.text = "\(Double(round(convertedAmount)))"
-//        }
-//                print("-----------Recalc Pressed---------------")
-//                print("runningNumber = \(runningNumber)")
-//                print("--------------------------------")
-//                print("leftValStr = \(leftValStr)")
-//                print("currentOperation = \(currentOperation)")
-//                print("rightValStr = \(rightValStr)")
-//                print("result = \(result)")
-//        
-//        
         print("Supposed to reCalc numbers on screen based on new selection")
     }
     
