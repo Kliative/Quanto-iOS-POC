@@ -164,17 +164,21 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                 cell.configureCityCell(cityName: self.destCities[indexPath.row])
                 
                 return cell
+                
             } else {
                 return CitiesCell()
             }
+            
         }else if tableView == self.baseTableView {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "CityBaseCell", for:indexPath) as? CitiesCell{
                 cell.configureCityCell(cityName: self.baseCities[indexPath.row])
                 
                 return cell
+                
             } else {
                 return CitiesCell()
             }
+            
         } else {
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for:indexPath) as? ProductCell{
                 cell.configureProductCell(productRange:self.productRangeSel, baseCurr:self.baseCurrSel, destCurr: self.destCurrSel, destCurrSymbol: self.destCurrSymbol, baseCurrSymbol: self.baseCurrSymbol, indexPath: indexPath.row, baseCityProdList: self.baseProdListDict, destCityProdList: self.destProdListDict)
@@ -184,6 +188,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                 return ProductCell()
             }
         }
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -222,8 +227,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             
             if self.isDestFull && self.isBaseFull {
                 self.productTableView.reloadData()
-                
-                
             }
         } else if tableView == self.baseTableView{
             self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
@@ -269,7 +272,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                         let key = snap.key
                         let destCityProdData = CityData(cityName:key, countryName:countryKey, productData:countryCityDict)
                         
-                        self.destProdListDict = destCityProdData.productData
+                        
                         
                         if self.destCityData.isEmpty {
                             self.destCityData.append(destCityProdData)
@@ -279,6 +282,9 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                         }
                         for i in (0..<self.destCityData.count){
                             if (self.destCityData[i].cityName == cityKey) {
+                                self.destProdListDict.removeAll()
+                                self.destProdListDict = self.destCityData[i].productData
+                                //
                                 self.cokeDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].coke[self.productRangeSel]!)"
                                 self.domBeerDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].domBeer[self.productRangeSel]!)"
                                 self.mealDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].meal[self.productRangeSel]!)"
@@ -299,7 +305,10 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                     if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
                         let baseCityProdData = CityData(cityName:key, countryName: countryKey, productData:countryCityDict)
-                        self.baseProdListDict = baseCityProdData.productData
+                        
+                        
+                        
+                        
                         if self.baseCityData.isEmpty {
                             self.baseCityData.append(baseCityProdData)
                         } else {
@@ -310,7 +319,9 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                         for i in (0..<self.baseCityData.count){
                             if (self.baseCityData[i].cityName == cityKey)
                             {
-                                print(self.productList)
+                                self.baseProdListDict.removeAll()
+                                self.baseProdListDict = self.baseCityData[i].productData
+                                //
                                 self.cokeBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].coke[self.productRangeSel]!)"
                                 self.domBeerBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].domBeer[self.productRangeSel]!)"
                                 self.mealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].meal[self.productRangeSel]!)"
@@ -323,6 +334,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             }
             
         })
+        
     }
     
     @IBAction func numberPressed(sender: UIButton){
@@ -345,11 +357,11 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         //Does Converstion
         if self.destCurrSel != nil && self.baseCurrSel != nil && result != "" {
             
-            let stringResult = Double(result)!
-            let priceToConver = Double(round(stringResult))
-            let convertedAmount = Double(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
+            let stringResult = Float(result)!
+            let priceToConver = Float(round(stringResult))
+            let convertedAmount = Float(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
             
-            destinationCurrencyLbl.text = "\(Double(round(convertedAmount)))"
+            destinationCurrencyLbl.text = "\(Float(round(convertedAmount)))"
             destinationCurrencyLbl.textColor = UIColor(red:0/255, green:0/255, blue:0/255, alpha:1)
         }
         
@@ -366,12 +378,12 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             calculationLbl.text = displayRunningNumber
             
             if self.destCurrSel != nil && self.baseCurrSel != nil && result != "" {
-                let stringResult = Double(result)!
-                let priceToConver = Double(round(stringResult))
+                let stringResult = Float(result)!
+                let priceToConver = Float(round(stringResult))
                 
-                let convertedAmount = Double(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
+                let convertedAmount = Float(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
                 
-                destinationCurrencyLbl.text = "\(Double(round(convertedAmount)))"
+                destinationCurrencyLbl.text = "\(Float(round(convertedAmount)))"
             }
         } else {
             runningNumber.removeAll()
@@ -389,10 +401,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             
         }
     }
-
-    
-    
-
     
     @IBAction func testCurrencyBtnPressed(_ sender: Any) {
         performSegue(withIdentifier: "destCurrVCSegue", sender: self)
@@ -512,13 +520,13 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                 rightValStr = runningNumber
                 
                 if currentOperation == Operation.Multiply {
-                    result = "\(Double(leftValStr)! * Double(rightValStr)!)"
+                    result = "\(Float(leftValStr)! * Float(rightValStr)!)"
                 } else if currentOperation == Operation.Divide{
-                    result = "\(Double(leftValStr)! / Double(rightValStr)!)"
+                    result = "\(Float(leftValStr)! / Float(rightValStr)!)"
                 } else if currentOperation == Operation.Subtract{
-                    result = "\(Double(leftValStr)! - Double(rightValStr)!)"
+                    result = "\(Float(leftValStr)! - Float(rightValStr)!)"
                 } else if currentOperation == Operation.Add{
-                    result = "\(Double(leftValStr)! + Double(rightValStr)!)"
+                    result = "\(Float(leftValStr)! + Float(rightValStr)!)"
                 }
                 
                 baseCurrencyLbl.text = result
@@ -536,13 +544,13 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                 runningNumber = ""
                 
                 if currentOperation == Operation.Multiply {
-                    result = "\(Double(leftValStr)! * Double(rightValStr)!)"
+                    result = "\(Float(leftValStr)! * Float(rightValStr)!)"
                 } else if currentOperation == Operation.Divide{
-                    result = "\(Double(leftValStr)! / Double(rightValStr)!)"
+                    result = "\(Float(leftValStr)! / Float(rightValStr)!)"
                 } else if currentOperation == Operation.Subtract{
-                    result = "\(Double(leftValStr)! - Double(rightValStr)!)"
+                    result = "\(Float(leftValStr)! - Float(rightValStr)!)"
                 } else if currentOperation == Operation.Add{
-                    result = "\(Double(leftValStr)! + Double(rightValStr)!)"
+                    result = "\(Float(leftValStr)! + Float(rightValStr)!)"
                 }
                 
                 leftValStr = result
@@ -550,12 +558,12 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                 
                 //Does Converstion
                 if self.destCurrSel != nil && self.baseCurrSel != nil && result != "" {
-                    let stringResult = Double(result)!
-                    let priceToConver = Double(round(stringResult))
+                    let stringResult = Float(result)!
+                    let priceToConver = Float(round(stringResult))
                     
-                    let convertedAmount = Double(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
+                    let convertedAmount = Float(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
                     
-                    destinationCurrencyLbl.text = "\(Double(round(convertedAmount)))"
+                    destinationCurrencyLbl.text = "\(Float(round(convertedAmount)))"
                 }
                 
             } else {

@@ -56,18 +56,24 @@ class CurrentExchange {
     
     
     //Makes it possible to convert from any curreny --> Returns String
-    func doConvertion(dest: String, base: String, price: Double) -> String{
+    func doConvertion(dest: String, base: String, price: Float) -> String{
         
-        let destCurrRate = self.rates[dest]
-        let baseCurrRate = self.rates[base]
+        if self.rates[dest] != nil && self.rates[base] != nil {
+            let destCurrRate = self.rates[dest]
+            let baseCurrRate = self.rates[base]
+            
+            let priceToCalc = price
+            
+            //Decommissions USD as Base Currency and Allows base:String to act as Base Currency
+            let baseToDollar = 1 / baseCurrRate!
+            let finalConv = Float(baseToDollar*destCurrRate!)
+            let calcResult = "\(finalConv*priceToCalc)"
+            
+            return calcResult
+        } else {
+            return ""
+        }
         
-        let priceToCalc = price
         
-        //Decommissions USD as Base Currency and Allows base:String to act as Base Currency
-        let baseToDollar = 1 / baseCurrRate!
-        let finalConv = baseToDollar*destCurrRate!
-        let calcResult = "\(finalConv*priceToCalc)"
-        
-        return calcResult
     }
 }
