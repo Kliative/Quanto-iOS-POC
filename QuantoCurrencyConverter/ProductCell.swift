@@ -8,11 +8,8 @@
 
 import UIKit
 
-
-
-
 class ProductCell: UITableViewCell {
-var currentRates: CurrentExchange!
+    var currentRates: CurrentExchange!
     
     @IBOutlet weak var productType:UILabel!
     @IBOutlet weak var destPrice:UILabel!
@@ -24,43 +21,44 @@ var currentRates: CurrentExchange!
         super.awakeFromNib()
         // Initialization code
         currentRates = CurrentExchange()
+        
     }
 
     func configureProductCell(productRange: String, baseCurr: String, destCurr:String, destCurrSymbol:String, baseCurrSymbol:String, indexPath: Int, baseCityProdList:Dictionary<String, AnyObject>, destCityProdList:Dictionary<String, AnyObject>){
         
-        let baseProdObj = Array(baseCityProdList)[indexPath]
-        let basePriceString = Float(baseProdObj.value[productRange] as! String)!
-        
-        let destProdObj = Array(destCityProdList)[indexPath]
-        let destPriceString = Float(destProdObj.value[productRange] as! String)!
-        
-        print("\(baseCurr)\(basePriceString) - \(destCurr) \(destPriceString) | \(baseProdObj.key) + \(destProdObj.key)")
-        if baseProdObj.key == destProdObj.key {
+        currentRates.downloadExchangeRates {
+            let baseProdObj = Array(baseCityProdList)[indexPath]
+            let basePriceString = Float(baseProdObj.value[productRange] as! String)!
             
-            productType.text = baseProdObj.key
+            let destProdObj = Array(destCityProdList)[indexPath]
+            let destPriceString = Float(destProdObj.value[productRange] as! String)!
             
-            basePrice.text = "\(baseCurrSymbol)\(basePriceString)"
-            destPrice.text = "\(destCurrSymbol)\(destPriceString)"
-
-            //NEED TO FIX CALCULATIONS
-            
-//                    let convertedPrice = Double(self.currentRates.doConvertion(dest: destCurr, base: baseCurr, price: destPriceString))!
-//                    print(convertedPrice)
-            
-            //supposed to be convertedPrice instead of destPriceString
-            let calc = basePriceString - destPriceString
-            
-            priceDifference.text = "\(baseCurrSymbol)\(String(format: "%.2f", calc))"
-            let basePriceText = basePriceString
-            let difPrice = Float(calc)
-            
-            
-            if difPrice >= basePriceText {
-                differenceLbl.text = "More Expensive"
-            } else {
-                differenceLbl.text = "Less Expensive"
+            if baseProdObj.key == destProdObj.key {
+                
+                self.productType.text = baseProdObj.key
+                
+                self.basePrice.text = "\(baseCurrSymbol)\(basePriceString)"
+                self.destPrice.text = "\(destCurrSymbol)\(destPriceString)"
+                
+                let convertedPrice = Float(self.currentRates.doConvertion(dest: baseCurr, base: destCurr, price: destPriceString))!
+                
+                let calc = basePriceString - convertedPrice
+                
+                self.priceDifference.text = "\(baseCurrSymbol)\(String(format: "%.2f", abs(calc)))"
+                let basePriceText = basePriceString
+                let difPrice = Float(abs(calc))
+                
+                
+                if difPrice >= basePriceText {
+                    self.differenceLbl.text = "More Expensive"
+                } else {
+                    self.differenceLbl.text = "Less Expensive"
+                }
             }
+        
         }
+        
+        
     }
 
 }

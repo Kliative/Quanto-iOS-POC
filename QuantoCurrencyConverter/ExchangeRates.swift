@@ -58,7 +58,7 @@ class CurrentExchange {
     //Makes it possible to convert from any curreny --> Returns String
     func doConvertion(dest: String, base: String, price: Float) -> String{
         
-        if self.rates[dest] != nil && self.rates[base] != nil {
+        
             let destCurrRate = self.rates[dest]
             let baseCurrRate = self.rates[base]
             
@@ -70,9 +70,7 @@ class CurrentExchange {
             let calcResult = "\(finalConv*priceToCalc)"
             
             return calcResult
-        } else {
-            return ""
-        }
+       
         
         
     }
