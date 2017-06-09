@@ -53,11 +53,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     @IBOutlet weak var domBeerDestLbl: UILabel!
     @IBOutlet weak var cokeDestLbl: UILabel!
     
-    @IBOutlet weak var mcmealBaseLbl: UILabel!
-    @IBOutlet weak var mealBaseLbl: UILabel!
-    @IBOutlet weak var domBeerBaseLbl: UILabel!
-    @IBOutlet weak var cokeBaseLbl: UILabel!
-    
     var productRangeSel: String!
     var cityIndexRow: Int!
     var baseCurrSymbol: String!
@@ -71,7 +66,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     var runningNumber = ""
     var leftValStr = ""
     var rightValStr = ""
-    var result = ""
+    var result = "0"
     
     enum Operation: String {
         case Divide = "/"
@@ -272,8 +267,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                         let key = snap.key
                         let destCityProdData = CityData(cityName:key, countryName:countryKey, productData:countryCityDict)
                         
-                        
-                        
                         if self.destCityData.isEmpty {
                             self.destCityData.append(destCityProdData)
                         } else {
@@ -284,11 +277,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                             if (self.destCityData[i].cityName == cityKey) {
                                 self.destProdListDict.removeAll()
                                 self.destProdListDict = self.destCityData[i].productData
-                                //
-                                self.cokeDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].coke[self.productRangeSel]!)"
-                                self.domBeerDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].domBeer[self.productRangeSel]!)"
-                                self.mealDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].meal[self.productRangeSel]!)"
-                                self.mcmealDestLbl.text = "\(self.destCurrSymbol!) \(self.destCityData[i].mcMeal[self.productRangeSel]!)"
+
                             }
                         }
                     }
@@ -296,7 +285,25 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             }
         })
     }
-    
+    func productAmount(convAm: Float){
+        
+        for i in (0..<self.destCityData.count){
+            if (destCityData[i].cityName == self.destCities[self.cityIndexRow])
+            {
+                
+                let cokeAmount = convAm / Float("\(self.destCityData[i].coke[self.productRangeSel]!)")!
+                let domBeerAmount = convAm / Float("\(self.destCityData[i].domBeer[self.productRangeSel]!)")!
+                let mealAmount = convAm / Float("\(self.destCityData[i].meal[self.productRangeSel]!)")!
+                let mcMealAmount = convAm / Float("\(self.destCityData[i].mcMeal[self.productRangeSel]!)")!
+                self.cokeDestLbl.text = "\(Int(cokeAmount))x"
+                self.domBeerDestLbl.text = "\(Int(domBeerAmount))x"
+                self.mealDestLbl.text = "\(Int(mealAmount))x"
+                self.mcmealDestLbl.text = "\(Int(mcMealAmount))x"
+                
+            }
+        }
+        
+    }
     func getBaseCitiesProd(countryKey:String, cityKey: String, productRange: String){
         print("--- running: getBaseCitiesProd")
         DataService.ds.REF_CITIES.child(countryKey).observe(.value, with: { (snapshot) in
@@ -305,10 +312,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                     if let countryCityDict = snap.value as? Dictionary<String, AnyObject> {
                         let key = snap.key
                         let baseCityProdData = CityData(cityName:key, countryName: countryKey, productData:countryCityDict)
-                        
-                        
-                        
-                        
+
                         if self.baseCityData.isEmpty {
                             self.baseCityData.append(baseCityProdData)
                         } else {
@@ -321,12 +325,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                             {
                                 self.baseProdListDict.removeAll()
                                 self.baseProdListDict = self.baseCityData[i].productData
-                                //
-                                self.cokeBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].coke[self.productRangeSel]!)"
-                                self.domBeerBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].domBeer[self.productRangeSel]!)"
-                                self.mealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].meal[self.productRangeSel]!)"
-                                self.mcmealBaseLbl.text = "\(self.baseCurrSymbol!) \(self.baseCityData[i].mcMeal[self.productRangeSel]!)"
-                                
+
                             }
                         }
                     }
@@ -360,6 +359,8 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             let stringResult = Float(result)!
             let priceToConver = Float(round(stringResult))
             let convertedAmount = Float(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
+            
+            self.productAmount(convAm: convertedAmount)
             
             destinationCurrencyLbl.text = "\(Float(round(convertedAmount)))"
             destinationCurrencyLbl.textColor = UIColor(red:0/255, green:0/255, blue:0/255, alpha:1)
@@ -509,8 +510,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     func reCalc() {
         print("Supposed to reCalc numbers on screen based on new selection")
     }
-    
-    
     
     func liveOperation(operation:Operation){
         

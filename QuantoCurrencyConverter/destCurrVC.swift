@@ -67,7 +67,6 @@ class destCurrVC:  UIViewController, UITableViewDelegate, UITableViewDataSource,
                         
                         self.cityNameArray = countryDict["cities"] as! [String]
 
-//                        print(countryDict["Capital"] as! String)
                     }
                 }
             }

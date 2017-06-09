@@ -433,34 +433,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.71739394430000003" green="0.71739394430000003" blue="0.71739394430000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qVl-HY-V51">
-                                <rect key="frame" x="14" y="134" width="70" height="11"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3t8-Vg-FaQ">
-                                <rect key="frame" x="111" y="132" width="70" height="11"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nRa-MU-XcP">
-                                <rect key="frame" x="189" y="132" width="70" height="11"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1O5-5B-kc2">
-                                <rect key="frame" x="262" y="132" width="70" height="11"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gM0-gH-bgm">
                                 <rect key="frame" x="16" y="43" width="170" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -479,7 +451,7 @@
                                         <rect key="frame" x="0.0" y="28" width="345" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JdR-aC-ffb" id="xiA-0x-UsK">
-                                            <rect key="frame" x="0.0" y="0.0" width="345" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="345" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vyu-Q3-bv7">
@@ -630,18 +602,14 @@
                         <outlet property="baseCurrencyLbl" destination="GNs-cV-PUt" id="ypM-yr-gga"/>
                         <outlet property="baseTableView" destination="RUS-sm-dgO" id="H45-PC-3nS"/>
                         <outlet property="calculationLbl" destination="Gkd-JZ-iY0" id="Xqa-lb-WBQ"/>
-                        <outlet property="cokeBaseLbl" destination="qVl-HY-V51" id="fYk-pt-0Xb"/>
                         <outlet property="cokeDestLbl" destination="fb3-dg-Jg3" id="5h7-Gl-iBe"/>
                         <outlet property="decimalBtn" destination="PeY-KY-hyZ" id="vhs-XZ-FHs"/>
                         <outlet property="destTableView" destination="9J0-t2-xgQ" id="D9j-Pg-xof"/>
                         <outlet property="destinationCurrencyBtn" destination="DMX-lt-iYU" id="jS6-zI-RtY"/>
                         <outlet property="destinationCurrencyLbl" destination="ccw-iG-t1Q" id="dl9-k2-WbY"/>
                         <outlet property="divideBtn" destination="lRA-op-wLb" id="Rt0-B4-rro"/>
-                        <outlet property="domBeerBaseLbl" destination="3t8-Vg-FaQ" id="hoV-IX-chH"/>
                         <outlet property="domBeerDestLbl" destination="ONr-Ag-t3j" id="WrA-LP-kXM"/>
-                        <outlet property="mcmealBaseLbl" destination="1O5-5B-kc2" id="zmn-y5-7RA"/>
                         <outlet property="mcmealDestLbl" destination="CaL-db-Nh1" id="i98-Kc-N1w"/>
-                        <outlet property="mealBaseLbl" destination="nRa-MU-XcP" id="YWX-xu-hlw"/>
                         <outlet property="mealDestLbl" destination="Bzg-Fa-jga" id="eTl-is-b9z"/>
                         <outlet property="multiplyBtn" destination="ZeS-bK-FiL" id="5jc-tb-erA"/>
                         <outlet property="productTableView" destination="nTs-3K-Hg7" id="W5E-Sy-9Rb"/>
