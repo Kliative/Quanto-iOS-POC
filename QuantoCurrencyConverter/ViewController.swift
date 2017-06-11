@@ -107,8 +107,14 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         
         calculationLbl.text = "0"
         baseCurrencyLbl.text = "0"
-        destinationCurrencyLbl.text = "Select Countries to Convert"
+        destinationCurrencyLbl.text = "0"
         destinationCurrencyLbl.textColor = UIColor(red:0/255, green:0/255, blue:0/255, alpha:0.2)
+        
+        self.cokeDestLbl.text = "0"
+        self.domBeerDestLbl.text = "0"
+        self.mealDestLbl.text = "0"
+        self.mcmealDestLbl.text = "0"
+        
         
         self.baseCurrencyBtn.contentHorizontalAlignment = .left
         self.destinationCurrencyBtn.contentHorizontalAlignment = .left
@@ -193,8 +199,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         } else if tableView == self.baseTableView {
             return self.baseCities.count
         } else {
-            print("-: baseProdlistDict.count -- \(self.destProdListDict.count)")
-            print("-: destProdlistDict.count -- \(self.baseProdListDict.count)")
             
             if self.baseProdListDict.count == self.destProdListDict.count {
                     return self.baseProdListDict.count
@@ -217,7 +221,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         if tableView == self.destTableView {
             self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
            
-            print("-: destCity at index row \(self.destCities[self.cityIndexRow])")
             self.isDestFull = true
             
             if self.isDestFull && self.isBaseFull {
@@ -225,7 +228,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             }
         } else if tableView == self.baseTableView{
             self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
-            print("-: baseCity at index row \(self.baseCities[self.cityIndexRow])")
+
             self.isBaseFull = true
             
             if self.isDestFull && self.isBaseFull {
@@ -360,7 +363,13 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             let priceToConver = Float(round(stringResult))
             let convertedAmount = Float(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
             
-            self.productAmount(convAm: convertedAmount)
+            if self.destCityData.isEmpty && self.baseCityData.isEmpty {
+                
+            } else {
+                self.productAmount(convAm: convertedAmount)
+            }
+            
+            
             
             destinationCurrencyLbl.text = "\(Float(round(convertedAmount)))"
             destinationCurrencyLbl.textColor = UIColor(red:0/255, green:0/255, blue:0/255, alpha:1)
@@ -389,7 +398,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         } else {
             runningNumber.removeAll()
             displayRunningNumber.removeAll()
-            
             baseCurrencyLbl.text = "0"
             destinationCurrencyLbl.text = "0"
             calculationLbl.text = "0"
@@ -469,6 +477,10 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         baseCurrencyLbl.text = "0"
         destinationCurrencyLbl.text = "0"
         calculationLbl.text = "0"
+        self.cokeDestLbl.text = "0"
+        self.domBeerDestLbl.text = "0"
+        self.mealDestLbl.text = "0"
+        self.mcmealDestLbl.text = "0"
         currentOperation = Operation.Empty
         leftValStr = ""
         rightValStr = ""

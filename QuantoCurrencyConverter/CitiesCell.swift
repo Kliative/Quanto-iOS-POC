@@ -13,7 +13,7 @@ class CitiesCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        // Initialization code//
     }
 
     func configureCityCell(cityName:String){
