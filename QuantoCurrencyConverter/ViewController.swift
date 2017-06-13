@@ -53,6 +53,8 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     @IBOutlet weak var domBeerDestLbl: UILabel!
     @IBOutlet weak var cokeDestLbl: UILabel!
     
+    
+    var destCapital:String!
     var productRangeSel: String!
     var cityIndexRow: Int!
     var baseCurrSymbol: String!
@@ -137,24 +139,28 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     }
     
     @IBAction func productRangePressed(sender: UIButton){
-        if sender.tag == 10{
-            self.productRangeSel = "low"
-            
-            self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
-            self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
-            self.productTableView.reloadData()
-            
-        } else if sender.tag == 11 {
-            self.productRangeSel = "norm"
-            self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
-            self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
-            self.productTableView.reloadData()
-        } else {
-            self.productRangeSel = "high"
-            self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
-            self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
-            self.productTableView.reloadData()
+        if self.destCityData.isEmpty && self.baseCityData.isEmpty{
+        }else {
+            if sender.tag == 10{
+                self.productRangeSel = "low"
+                
+                self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+                self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+                self.productTableView.reloadData()
+                
+            } else if sender.tag == 11 {
+                self.productRangeSel = "norm"
+                self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+                self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+                self.productTableView.reloadData()
+            } else {
+                self.productRangeSel = "high"
+                self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+                self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+                self.productTableView.reloadData()
+            }
         }
+        
         
     }
     
@@ -245,6 +251,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         self.destCurrSel = data.currencyCode
         self.destCurrSymbol = data.currencySymbol
         self.destCities = data.cities
+        self.destCapital = data.capitalName
         self.getDestCitiesProd(countryKey: data.countryName
             , cityKey: data.capitalName, productRange: self.productRangeSel)
         self.destTableView.reloadData()
@@ -289,22 +296,42 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         })
     }
     func productAmount(convAm: Float){
+        print(self.destCityData.count)
+        print(self.cityIndexRow)
         
-        for i in (0..<self.destCityData.count){
-            if (destCityData[i].cityName == self.destCities[self.cityIndexRow])
-            {
-                
-                let cokeAmount = convAm / Float("\(self.destCityData[i].coke[self.productRangeSel]!)")!
-                let domBeerAmount = convAm / Float("\(self.destCityData[i].domBeer[self.productRangeSel]!)")!
-                let mealAmount = convAm / Float("\(self.destCityData[i].meal[self.productRangeSel]!)")!
-                let mcMealAmount = convAm / Float("\(self.destCityData[i].mcMeal[self.productRangeSel]!)")!
-                self.cokeDestLbl.text = "\(Int(cokeAmount))x"
-                self.domBeerDestLbl.text = "\(Int(domBeerAmount))x"
-                self.mealDestLbl.text = "\(Int(mealAmount))x"
-                self.mcmealDestLbl.text = "\(Int(mcMealAmount))x"
-                
+        if self.cityIndexRow != nil {
+            for i in (0..<self.destCityData.count){
+                if (destCityData[i].cityName == self.destCities[self.cityIndexRow])
+                {
+                    let cokeAmount = convAm / Float("\(self.destCityData[i].coke[self.productRangeSel]!)")!
+                    let domBeerAmount = convAm / Float("\(self.destCityData[i].domBeer[self.productRangeSel]!)")!
+                    let mealAmount = convAm / Float("\(self.destCityData[i].meal[self.productRangeSel]!)")!
+                    let mcMealAmount = convAm / Float("\(self.destCityData[i].mcMeal[self.productRangeSel]!)")!
+                    self.cokeDestLbl.text = "\(Int(cokeAmount))x"
+                    self.domBeerDestLbl.text = "\(Int(domBeerAmount))x"
+                    self.mealDestLbl.text = "\(Int(mealAmount))x"
+                    self.mcmealDestLbl.text = "\(Int(mcMealAmount))x"
+                    
+                }
+            }
+        } else {
+            for i in (0..<self.destCityData.count){
+                if (destCityData[i].cityName == self.destCapital)
+                {
+                    let cokeAmount = convAm / Float("\(self.destCityData[i].coke[self.productRangeSel]!)")!
+                    let domBeerAmount = convAm / Float("\(self.destCityData[i].domBeer[self.productRangeSel]!)")!
+                    let mealAmount = convAm / Float("\(self.destCityData[i].meal[self.productRangeSel]!)")!
+                    let mcMealAmount = convAm / Float("\(self.destCityData[i].mcMeal[self.productRangeSel]!)")!
+                    self.cokeDestLbl.text = "\(Int(cokeAmount))x"
+                    self.domBeerDestLbl.text = "\(Int(domBeerAmount))x"
+                    self.mealDestLbl.text = "\(Int(mealAmount))x"
+                    self.mcmealDestLbl.text = "\(Int(mcMealAmount))x"
+                    
+                }
             }
         }
+        
+        
         
     }
     func getBaseCitiesProd(countryKey:String, cityKey: String, productRange: String){
@@ -366,7 +393,13 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             if self.destCityData.isEmpty && self.baseCityData.isEmpty {
                 
             } else {
-                self.productAmount(convAm: convertedAmount)
+                
+                if self.destCities.isEmpty {
+                    
+                } else {
+                    self.productAmount(convAm: convertedAmount)
+                }
+                
             }
             
             
