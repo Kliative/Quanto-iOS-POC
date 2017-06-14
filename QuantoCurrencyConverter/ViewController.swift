@@ -139,25 +139,30 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     }
     
     @IBAction func productRangePressed(sender: UIButton){
-        if self.destCityData.isEmpty && self.baseCityData.isEmpty{
-        }else {
-            if sender.tag == 10{
-                self.productRangeSel = "low"
+
+        if self.destCityData.count > 0 && self.baseCityData.count > 0 {
+            
+        
+            if self.cityIndexRow != nil {
                 
-                self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
-                self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
-                self.productTableView.reloadData()
-                
-            } else if sender.tag == 11 {
-                self.productRangeSel = "norm"
-                self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
-                self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
-                self.productTableView.reloadData()
-            } else {
-                self.productRangeSel = "high"
-                self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
-                self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
-                self.productTableView.reloadData()
+                if sender.tag == 10{
+                    self.productRangeSel = "low"
+                    
+                    self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+                    self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+                    self.productTableView.reloadData()
+                    
+                } else if sender.tag == 11 {
+                    self.productRangeSel = "norm"
+                    self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+                    self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+                    self.productTableView.reloadData()
+                } else {
+                    self.productRangeSel = "high"
+                    self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
+                    self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+                    self.productTableView.reloadData()
+                }
             }
         }
         
