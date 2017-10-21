@@ -9,7 +9,14 @@
 import UIKit
 import FirebaseDatabase
 
-class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate, UITableViewDataSource, UITableViewDelegate {
+protocol citySelectionDelegate {
+    func loadCityData(baseArray:Array<String>, destArray:Array<String>,baseCountryKey:String,destCountryKey:String)
+    
+}
+
+class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelegate, selectedCityDelegate, UITableViewDataSource, UITableViewDelegate {
+    
+    var cityDelegate: citySelectionDelegate? = nil
     
     var destCityData = [CityData]()
     var baseCityData = [CityData]()
@@ -23,8 +30,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     var isBaseFull = false
     var isDestFull = false
     
-    @IBOutlet weak var destTableView:UITableView!
-    @IBOutlet weak var baseTableView:UITableView!
     @IBOutlet weak var productTableView:UITableView!
     var countryCity: Dictionary<String, AnyObject>!
     var cityProds: Dictionary<String, AnyObject>!
@@ -85,18 +90,12 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     
     var baseCurrSel: String!
     var destCurrSel: String!
-    var testCurrSel: String!
-//    
-    var sortedCurrency:[String] = []
+
    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.productList = 0
-        destTableView.delegate = self
-        destTableView.dataSource = self
-        
-        baseTableView.delegate = self
-        baseTableView.dataSource = self
+
         
         productTableView.delegate = self
         productTableView.dataSource = self
@@ -138,6 +137,12 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         
     }
     
+    @IBAction func citySelVC(_ sender: Any) {
+
+    
+
+    }
+    
     @IBAction func productRangePressed(sender: UIButton){
 
         if self.destCityData.count > 0 && self.baseCityData.count > 0 {
@@ -150,19 +155,24 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                     
                     self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
                     self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+                    self.globalProdAmount()
                     self.productTableView.reloadData()
                     
                 } else if sender.tag == 11 {
                     self.productRangeSel = "norm"
                     self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
                     self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+                    self.globalProdAmount()
                     self.productTableView.reloadData()
                 } else {
                     self.productRangeSel = "high"
                     self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
                     self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
+                    self.globalProdAmount()
                     self.productTableView.reloadData()
+                    
                 }
+                
             }
         }
         
@@ -171,27 +181,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if tableView == self.destTableView {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "CityCell", for:indexPath) as? CitiesCell{
-                cell.configureCityCell(cityName: self.destCities[indexPath.row])
-                
-                return cell
-                
-            } else {
-                return CitiesCell()
-            }
-            
-        }else if tableView == self.baseTableView {
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "CityBaseCell", for:indexPath) as? CitiesCell{
-                cell.configureCityCell(cityName: self.baseCities[indexPath.row])
-                
-                return cell
-                
-            } else {
-                return CitiesCell()
-            }
-            
-        } else {
+        
             if let cell = tableView.dequeueReusableCell(withIdentifier: "ProductCell", for:indexPath) as? ProductCell{
                 cell.configureProductCell(productRange:self.productRangeSel, baseCurr:self.baseCurrSel, destCurr: self.destCurrSel, destCurrSymbol: self.destCurrSymbol, baseCurrSymbol: self.baseCurrSymbol, indexPath: indexPath.row, baseCityProdList: self.baseProdListDict, destCityProdList: self.destProdListDict)
                
@@ -199,24 +189,16 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             } else {
                 return ProductCell()
             }
-        }
+        
         
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if tableView == self.destTableView {
-            return self.destCities.count
-        } else if tableView == self.baseTableView {
-            return self.baseCities.count
+        if self.baseProdListDict.count == self.destProdListDict.count {
+                return self.baseProdListDict.count
         } else {
-            
-            if self.baseProdListDict.count == self.destProdListDict.count {
-                    return self.baseProdListDict.count
-            } else {
-                return self.baseCityData.count
-            }
-        
+            return self.baseCityData.count
         }
         
     }
@@ -225,31 +207,15 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         return 1
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func loadSelectedCity(baseCitySel:String,destCitySel:String){
         
-        self.cityIndexRow = indexPath.row
+        self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: destCitySel, productRange: self.productRangeSel)
+        self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: baseCitySel, productRange: self.productRangeSel)
         
-        if tableView == self.destTableView {
-            self.getDestCitiesProd(countryKey: self.destCountryKey, cityKey: self.destCities[self.cityIndexRow], productRange: self.productRangeSel)
-           
-            self.isDestFull = true
-            
-            if self.isDestFull && self.isBaseFull {
-                self.productTableView.reloadData()
-            }
-        } else if tableView == self.baseTableView{
-            self.getBaseCitiesProd(countryKey: self.baseCountryKey, cityKey: self.baseCities[self.cityIndexRow], productRange: self.productRangeSel)
-
-            self.isBaseFull = true
-            
-            if self.isDestFull && self.isBaseFull {
-                self.productTableView.reloadData()
-            }
-            
-        }
+        //
         
+        self.productTableView.reloadData()
     }
-    
     func userDidEnterDestData(data: CountryData) {
         self.destCountryKey = data.countryName
         self.destinationCurrencyBtn.setTitle("\(data.countryName) [\(data.currencyCode)]", for: .normal)
@@ -259,7 +225,11 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         self.destCapital = data.capitalName
         self.getDestCitiesProd(countryKey: data.countryName
             , cityKey: data.capitalName, productRange: self.productRangeSel)
-        self.destTableView.reloadData()
+        
+        self.globalProdAmount()
+        
+        
+        
     }
     
     func userDidEnterBaseData(data: CountryData) {
@@ -270,7 +240,8 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         self.baseCurrSymbol = data.currencySymbol
         self.getBaseCitiesProd(countryKey: data.countryName
             , cityKey: data.capitalName, productRange: self.productRangeSel)
-        self.baseTableView.reloadData()
+        
+
     }
     
     func getDestCitiesProd(countryKey:String, cityKey: String, productRange: String){
@@ -301,10 +272,9 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
         })
     }
     func productAmount(convAm: Float){
-        print(self.destCityData.count)
-        print(self.cityIndexRow)
-        
+        print("--productAmount")
         if self.cityIndexRow != nil {
+            print("--cityIndexRow")
             for i in (0..<self.destCityData.count){
                 if (destCityData[i].cityName == self.destCities[self.cityIndexRow])
                 {
@@ -320,6 +290,8 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                 }
             }
         } else {
+            print("--destCapital")
+            print(self.destCityData.count)
             for i in (0..<self.destCityData.count){
                 if (destCityData[i].cityName == self.destCapital)
                 {
@@ -335,9 +307,6 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                 }
             }
         }
-        
-        
-        
     }
     func getBaseCitiesProd(countryKey:String, cityKey: String, productRange: String){
         print("--- running: getBaseCitiesProd")
@@ -406,9 +375,7 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
                 }
                 
             }
-            
-            
-            
+
             destinationCurrencyLbl.text = "\(Float(round(convertedAmount)))"
             destinationCurrencyLbl.textColor = UIColor(red:0/255, green:0/255, blue:0/255, alpha:1)
         }
@@ -537,6 +504,16 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             let baseVC: baseCurrVC = segue.destination as! baseCurrVC
             baseVC.delegate = self
         }
+        if segue.identifier == "citySelectionSegue" {
+            let cityVC: CitySelectionViewController = segue.destination as! CitySelectionViewController
+            
+            cityVC.baseCities = self.baseCities
+            cityVC.destCities = self.destCities
+            
+            cityVC.delegate = self
+        }
+        
+        
     }
     
     func disableBtns(){
@@ -625,15 +602,19 @@ class ViewController: UIViewController, baseDataSentDelegate, destDataSentDelega
             runningNumber = ""
             currentOperation = operation
         }
-        //        print("-----------Operation Pressed---------------")
-        //        print("runningNumber = \(runningNumber)")
-        //        print("--------------------------------")
-        //        print("leftValStr = \(leftValStr)")
-        //        print("currentOperation = \(currentOperation)")
-        //        print("rightValStr = \(rightValStr)")
-        //        print("result = \(result)")
     }
 
-    
+    func globalProdAmount() {
+//        print(" --running: globalProdAmount() ")
+        let stringResult = Float(result)!
+        let priceToConver = Float(round(stringResult))
+        let convertedAmount = Float(self.currentRates.doConvertion(dest: self.destCurrSel, base: self.baseCurrSel, price: priceToConver))!
+        
+        
+        if self.destCities.count > 0 {
+            self.productAmount(convAm: convertedAmount)
+        }
+        
+    }
 }
 

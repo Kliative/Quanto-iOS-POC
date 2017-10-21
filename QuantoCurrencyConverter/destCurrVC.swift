@@ -15,8 +15,6 @@ protocol destDataSentDelegate {
     func userDidEnterDestData(data: CountryData)
 }
 
-
-
 class destCurrVC:  UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     var countryData = [CountryData]()
     
@@ -108,7 +106,11 @@ class destCurrVC:  UIViewController, UITableViewDelegate, UITableViewDataSource,
         let countryData = self.countryData[indexPath.row]
             //send back the currency Code, see if you can send the whole object :) :)
 //            let data = countryData.currencyCode
+        if delegate != nil {
             delegate?.userDidEnterDestData(data: countryData)
+            print("destDelegate = \(String(describing: delegate))")
+        }
+        
       
         dismiss(animated: true) {
             ViewController().reCalc()

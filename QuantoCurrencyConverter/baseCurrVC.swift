@@ -108,6 +108,8 @@ class baseCurrVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
         //            let data = countryData.currencyCode
         delegate?.userDidEnterBaseData(data: countryData)
         
+       
+
         dismiss(animated: true) {
             ViewController().reCalc()
         }
@@ -130,6 +132,13 @@ class baseCurrVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
     }
     
     @IBAction func dismissBaseVCPressed(_ sender: Any) {
+        
+        dismiss(animated: true, completion: nil)
+    }
+    //
+
+    
+    @IBAction func cancelButtonTapped(sender: AnyObject) {
         
         dismiss(animated: true, completion: nil)
     }

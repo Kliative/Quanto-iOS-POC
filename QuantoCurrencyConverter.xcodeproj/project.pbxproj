@@ -17,7 +17,14 @@
 		7A0F70751EDEB0AD00798489 /* CitiesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F70741EDEB0AD00798489 /* CitiesCell.swift */; };
 		7A0F70771EDEFD8B00798489 /* baseCurrVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F70761EDEFD8B00798489 /* baseCurrVC.swift */; };
 		7A0F70791EE04BBD00798489 /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F70781EE04BBD00798489 /* ProductCell.swift */; };
+		7A37EEA51F97C7690067A756 /* CitySelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A37EEA41F97C7690067A756 /* CitySelectionViewController.swift */; };
+		7A3830211F9771C00061762B /* AppNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A38301C1F9771C00061762B /* AppNavController.swift */; };
+		7A3830221F9771C00061762B /* HalfModalPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A38301D1F9771C00061762B /* HalfModalPresentationController.swift */; };
+		7A3830231F9771C00061762B /* HalfModalInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A38301E1F9771C00061762B /* HalfModalInteractiveTransition.swift */; };
+		7A3830241F9771C00061762B /* HalfModalTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A38301F1F9771C00061762B /* HalfModalTransitionAnimator.swift */; };
+		7A3830251F9771C00061762B /* HalfModalTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3830201F9771C00061762B /* HalfModalTransitioningDelegate.swift */; };
 		7A39EDB91ED2BDCD00993346 /* CurrencyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A39EDB81ED2BDCD00993346 /* CurrencyCell.swift */; };
+		7A543F291F94D474001E213D /* QuantoCurrencyConverter.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7A543F271F94D474001E213D /* QuantoCurrencyConverter.xcdatamodeld */; };
 		7A71EA121ECB92E000EF7469 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EA111ECB92E000EF7469 /* Constants.swift */; };
 		7A71EA141ECB92F000EF7469 /* ExchangeRates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A71EA131ECB92F000EF7469 /* ExchangeRates.swift */; };
 		7A71EA161ECC8F3B00EF7469 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = 7A71EA151ECC8F3B00EF7469 /* Podfile */; };
@@ -40,7 +47,14 @@
 		7A0F70741EDEB0AD00798489 /* CitiesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitiesCell.swift; sourceTree = "<group>"; };
 		7A0F70761EDEFD8B00798489 /* baseCurrVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = baseCurrVC.swift; sourceTree = "<group>"; };
 		7A0F70781EE04BBD00798489 /* ProductCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
+		7A37EEA41F97C7690067A756 /* CitySelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySelectionViewController.swift; sourceTree = "<group>"; };
+		7A38301C1F9771C00061762B /* AppNavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppNavController.swift; sourceTree = "<group>"; };
+		7A38301D1F9771C00061762B /* HalfModalPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalPresentationController.swift; sourceTree = "<group>"; };
+		7A38301E1F9771C00061762B /* HalfModalInteractiveTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalInteractiveTransition.swift; sourceTree = "<group>"; };
+		7A38301F1F9771C00061762B /* HalfModalTransitionAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalTransitionAnimator.swift; sourceTree = "<group>"; };
+		7A3830201F9771C00061762B /* HalfModalTransitioningDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HalfModalTransitioningDelegate.swift; sourceTree = "<group>"; };
 		7A39EDB81ED2BDCD00993346 /* CurrencyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyCell.swift; sourceTree = "<group>"; };
+		7A543F281F94D474001E213D /* QuantoCurrencyConverter.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = QuantoCurrencyConverter.xcdatamodel; sourceTree = "<group>"; };
 		7A71EA111ECB92E000EF7469 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7A71EA131ECB92F000EF7469 /* ExchangeRates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExchangeRates.swift; sourceTree = "<group>"; };
 		7A71EA151ECC8F3B00EF7469 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -95,6 +109,7 @@
 				0847E9BE1EBB5D56001D2CAA /* LaunchScreen.storyboard */,
 				0847E9C11EBB5D56001D2CAA /* Info.plist */,
 				7A9F77C31EDC2C7F00E1405A /* GoogleService-Info.plist */,
+				7A543F271F94D474001E213D /* QuantoCurrencyConverter.xcdatamodeld */,
 				7A71EA151ECC8F3B00EF7469 /* Podfile */,
 			);
 			path = QuantoCurrencyConverter;
@@ -103,7 +118,6 @@
 		7A13AA3A1ED71B0E00140304 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7A9F77C71EDC398100E1405A /* CountryData.swift */,
 				7A9F77C91EDD54BD00E1405A /* CityData.swift */,
 			);
 			name = Model;
@@ -115,13 +129,36 @@
 				0847E9B71EBB5D56001D2CAA /* ViewController.swift */,
 				7A0F70721EDDD58900798489 /* destCurrVC.swift */,
 				7A0F70761EDEFD8B00798489 /* baseCurrVC.swift */,
+				7A37EEA41F97C7690067A756 /* CitySelectionViewController.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		7A3830261F9771D90061762B /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				7A38301D1F9771C00061762B /* HalfModalPresentationController.swift */,
+			);
+			name = Presentation;
+			sourceTree = "<group>";
+		};
+		7A3830271F9771F50061762B /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				7A38301E1F9771C00061762B /* HalfModalInteractiveTransition.swift */,
+				7A38301F1F9771C00061762B /* HalfModalTransitionAnimator.swift */,
+				7A3830201F9771C00061762B /* HalfModalTransitioningDelegate.swift */,
+			);
+			name = Transition;
 			sourceTree = "<group>";
 		};
 		7A39EDB31ED2BD8400993346 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7A38301C1F9771C00061762B /* AppNavController.swift */,
+				7A3830261F9771D90061762B /* Presentation */,
+				7A3830271F9771F50061762B /* Transition */,
+				7A9F77C71EDC398100E1405A /* CountryData.swift */,
 				7A39EDB81ED2BDCD00993346 /* CurrencyCell.swift */,
 				7A0F70741EDEB0AD00798489 /* CitiesCell.swift */,
 				7A0F70781EE04BBD00798489 /* ProductCell.swift */,
@@ -283,12 +320,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A3830231F9771C00061762B /* HalfModalInteractiveTransition.swift in Sources */,
 				7A9F77C61EDC33EC00E1405A /* DataService.swift in Sources */,
+				7A3830241F9771C00061762B /* HalfModalTransitionAnimator.swift in Sources */,
+				7A3830211F9771C00061762B /* AppNavController.swift in Sources */,
+				7A3830221F9771C00061762B /* HalfModalPresentationController.swift in Sources */,
 				7A39EDB91ED2BDCD00993346 /* CurrencyCell.swift in Sources */,
+				7A543F291F94D474001E213D /* QuantoCurrencyConverter.xcdatamodeld in Sources */,
 				7A71EA141ECB92F000EF7469 /* ExchangeRates.swift in Sources */,
+				7A37EEA51F97C7690067A756 /* CitySelectionViewController.swift in Sources */,
 				7A9F77C81EDC398100E1405A /* CountryData.swift in Sources */,
 				7A0F70791EE04BBD00798489 /* ProductCell.swift in Sources */,
 				0847E9B81EBB5D56001D2CAA /* ViewController.swift in Sources */,
+				7A3830251F9771C00061762B /* HalfModalTransitioningDelegate.swift in Sources */,
 				7A0F70731EDDD58A00798489 /* destCurrVC.swift in Sources */,
 				0847E9B61EBB5D56001D2CAA /* AppDelegate.swift in Sources */,
 				7A71EA121ECB92E000EF7469 /* Constants.swift in Sources */,
@@ -464,6 +508,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7A543F271F94D474001E213D /* QuantoCurrencyConverter.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7A543F281F94D474001E213D /* QuantoCurrencyConverter.xcdatamodel */,
+			);
+			currentVersion = 7A543F281F94D474001E213D /* QuantoCurrencyConverter.xcdatamodel */;
+			path = QuantoCurrencyConverter.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 0847E9AA1EBB5D56001D2CAA /* Project object */;
 }
